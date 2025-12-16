@@ -11,8 +11,13 @@ cd "$PROJECT_DIR" || exit 1
 
 # Configuration comes from environment variables (set by Makefile)
 
-COMBINED_FILE="summary/combined_results.csv"
-OUTPUT_JSON="summary/analysis.json"
+# Use environment variables if set, otherwise use defaults
+COMBINED_FILE="${COMBINED_FILE:-summary/combined_results.csv}"
+OUTPUT_JSON="${OUTPUT_JSON:-summary/analysis.json}"
+
+# Export for Python subprocess
+export COMBINED_FILE
+export OUTPUT_JSON
 
 if [ ! -f "$COMBINED_FILE" ]; then
     echo "ERROR: Combined results file not found: $COMBINED_FILE"
