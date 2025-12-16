@@ -13,6 +13,10 @@ SAC2C_ORIG_LOCAL := /home/ruben/Repos/sacoriginal/sac2c/build_p/sac2c_p
 SAC2C_NEW_SLURM := /home/rhensen/sac2c/build_p/sac2c_p
 SAC2C_ORIG_SLURM := /home/rhensen/sacoriginal/sac2c/build_p/sac2c_p
 
+# Compiler base directories (parent of build_p)
+SAC2C_NEW_DIR_SLURM := /home/rhensen/sac2c/build_p
+SAC2C_ORIG_DIR_SLURM := /home/rhensen/sacoriginal/sac2c/build_p
+
 # =============================================================================
 # Stdlib Source Paths
 # =============================================================================

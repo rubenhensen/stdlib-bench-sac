@@ -26,9 +26,11 @@ for compiler in $COMPILERS; do
     case $compiler in
         new)
             SAC2C_PATH="$SAC2C_NEW_SLURM"
+            SAC2C_DIR="$SAC2C_NEW_DIR_SLURM"
             ;;
         orig)
             SAC2C_PATH="$SAC2C_ORIG_SLURM"
+            SAC2C_DIR="$SAC2C_ORIG_DIR_SLURM"
             ;;
         *)
             echo "ERROR: Unknown compiler: $compiler"
@@ -47,6 +49,7 @@ for compiler in $COMPILERS; do
         sed -e "s|__COMPILER__|${compiler}|g" \
             -e "s|__RUN__|${run}|g" \
             -e "s|__SAC2C_PATH__|${SAC2C_PATH}|g" \
+            -e "s|__SAC2C_DIR__|${SAC2C_DIR}|g" \
             -e "s|__STDLIB_SRC__|${STDLIB_SRC_SLURM}|g" \
             -e "s|__BUILD_TARGETS__|${BUILD_TARGETS}|g" \
             -e "s|__BUILD_SYSTEM__|${BUILD_SYSTEM}|g" \

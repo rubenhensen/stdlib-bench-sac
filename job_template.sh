@@ -20,6 +20,12 @@ SAC2C_PATH="__SAC2C_PATH__"
 STDLIB_SRC="__STDLIB_SRC__"
 BUILD_TARGETS="__BUILD_TARGETS__"
 BUILD_SYSTEM="__BUILD_SYSTEM__"
+SAC2C_DIR="__SAC2C_DIR__"
+
+# Isolate library paths to prevent cross-contamination between compilers
+# This ensures each compiler uses its own prelude and runtime libraries
+export SAC2CRC="${SAC2C_DIR}/sac2crc"
+export LD_LIBRARY_PATH="${SAC2C_DIR}/runtime_build/src/runtime_libraries-build/lib:${LD_LIBRARY_PATH}"
 
 # Create unique temporary build directory in home
 TEMP_BUILD_DIR="${HOME}/tmp_stdlib_build_${COMPILER}_${RUN_NUM}_${SLURM_JOB_ID}"
