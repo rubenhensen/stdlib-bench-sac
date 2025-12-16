@@ -30,7 +30,6 @@ TEMP_BUILD_DIR="${HOME}/tmp_stdlib_build_${COMPILER}_${RUN_NUM}_${SLURM_JOB_ID}"
 
 # Clear any existing SAC2C environment variables that might cause conflicts
 unset SAC2CRC
-unset SAC2CBASE
 unset SAC2C_STANDARD_PACKAGES
 unset SAC2C_INCLUDE_PATH
 unset SAC2C_LIBRARY_PATH
@@ -38,8 +37,10 @@ unset SAC2C_LIBRARY_PATH
 # Remove any cached sac2crc files/directories that might cause conflicts
 rm -rf "${HOME}/.sac2crc"* "${HOME}/.sac2c"*
 
+# Set compiler base directory so it can find its packages
+export SAC2CBASE="${SAC2C_DIR}"
+
 # Set compiler-specific runtime library path
-# Do NOT set SAC2CRC - let the compiler use its built-in configuration
 export LD_LIBRARY_PATH="${SAC2C_DIR}/runtime_build/src/runtime_libraries-build/lib:${SAC2C_DIR}/runtime_build/src/runtime_libraries-build/lib/prelude:${LD_LIBRARY_PATH}"
 
 # Isolate temp directory
@@ -87,15 +88,16 @@ echo "Verifying compiler:"
 echo ""
 
 echo "Environment isolation:"
+echo "  SAC2CBASE: $SAC2CBASE"
 echo "  Compiler dir: $SAC2C_DIR"
 echo "  LD_LIBRARY_PATH (first 2 entries):"
 echo "    ${LD_LIBRARY_PATH%%:*}"
 echo "    $(echo "$LD_LIBRARY_PATH" | cut -d: -f2)"
-echo "  Prelude check:"
+echo "  Prelude library check:"
 if [ -f "${SAC2C_DIR}/runtime_build/src/runtime_libraries-build/lib/prelude/tree/host/seq/libsacprelude_pTree.so" ]; then
-    echo "    Prelude library found: YES"
+    echo "    ${SAC2C_DIR}/runtime_build/.../prelude/.../libsacprelude_pTree.so: EXISTS"
 else
-    echo "    Prelude library found: NO (ERROR)"
+    echo "    Prelude library: NOT FOUND (ERROR)"
 fi
 echo ""
 
