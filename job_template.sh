@@ -34,14 +34,29 @@ unset SAC2C_STANDARD_PACKAGES
 unset SAC2C_INCLUDE_PATH
 unset SAC2C_LIBRARY_PATH
 
-# Remove any cached sac2crc files/directories that might cause conflicts
-rm -rf "${HOME}/.sac2crc"* "${HOME}/.sac2c"*
+# CRITICAL: Remove the ~/.sac2crc/ directory which contains cached library paths
+# This directory points to prelude paths and will cause cross-compiler contamination
+echo "Clearing cached SAC2C configuration..."
+rm -rf "${HOME}/.sac2crc" "${HOME}/.sac2crc"* "${HOME}/.sac2c"*
 
 # Set compiler base directory so it can find its packages
 export SAC2CBASE="${SAC2C_DIR}"
 
 # Set compiler-specific runtime library path
 export LD_LIBRARY_PATH="${SAC2C_DIR}/runtime_build/src/runtime_libraries-build/lib:${SAC2C_DIR}/runtime_build/src/runtime_libraries-build/lib/prelude:${LD_LIBRARY_PATH}"
+
+# Force the compiler to regenerate ~/.sac2crc/ with correct paths for this compiler
+echo "Regenerating SAC2C configuration for ${COMPILER} compiler..."
+"$SAC2C_PATH" -V >/dev/null 2>&1 || true
+
+# Verify the ~/.sac2crc/ directory was created
+if [ -d "${HOME}/.sac2crc" ]; then
+    echo "SAC2C configuration regenerated successfully"
+    echo "Contents of ~/.sac2crc/:"
+    ls -la "${HOME}/.sac2crc/" 2>/dev/null | head -10
+else
+    echo "WARNING: ~/.sac2crc/ directory not created"
+fi
 
 # Isolate temp directory
 export TMPDIR="${TEMP_BUILD_DIR}/tmp"
