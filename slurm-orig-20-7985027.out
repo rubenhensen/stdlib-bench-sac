@@ -1,0 +1,252 @@
+Clearing cached SAC2C configuration...
+Creating SAC2C configuration for orig compiler...
+SAC2C configuration created successfully
+Prelude path: /home/rhensen/sacoriginal/sac2c/build_p/runtime_build/src/runtime_libraries-build/lib/prelude
+Configuration files:
+total 21
+drwxrwxr-x  2 rhensen rhensen   4 Dec 16 14:11 .
+drwxr-x--- 43 rhensen rhensen  55 Dec 16 14:11 ..
+-rw-rw-r--  1 rhensen rhensen 524 Dec 16 14:11 sac2crc.debug.prelude
+-rw-rw-r--  1 rhensen rhensen 524 Dec 16 14:11 sac2crc.release.prelude
+========================================
+Stdlib Compilation Benchmark
+========================================
+Compiler: orig
+Run: 20
+Job ID: 7985027
+Node: cn132
+Temp Build Dir: /home/rhensen/tmp_stdlib_build_orig_20_7985027
+SAC2C: /home/rhensen/sacoriginal/sac2c/build_p/sac2c_p
+Stdlib Source: /home/rhensen/Stdlib
+Build Targets: seq;mt_pth
+Build System: make
+CPUs: 4
+========================================
+
+Verifying compiler:
+sac2c 2.0.0-Tintigny-187-ge8af-dirty
+build-type: RELEASE
+built-by: "rhensen" at 2025-11-11T10:57:23
+
+Environment isolation:
+  SAC2CBASE: /home/rhensen/sacoriginal/sac2c/build_p
+  Compiler dir: /home/rhensen/sacoriginal/sac2c/build_p
+  LD_LIBRARY_PATH (first 2 entries):
+    /home/rhensen/sacoriginal/sac2c/build_p/runtime_build/src/runtime_libraries-build/lib
+    /home/rhensen/sacoriginal/sac2c/build_p/runtime_build/src/runtime_libraries-build/lib/prelude
+  Prelude library check:
+    /home/rhensen/sacoriginal/sac2c/build_p/runtime_build/.../prelude/.../libsacprelude_pTree.so: EXISTS
+
+Creating temporary build directory...
+Starting clean build...
+
+Running CMake configuration...
+-- The C compiler identification is GNU 11.4.0
+-- The CXX compiler identification is GNU 11.4.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found Git: /usr/bin/git (found version "2.34.1") 
+-- Found BISON: /usr/bin/bison (found version "3.8.2") 
+-- Found FLEX: /usr/bin/flex (found version "2.6.4") 
+-- Checking if sac2c supports flag "-Xp"
+-- Checking if sac2c supports flag "-Xp" - found
+-- Target `seq' build properties: host seq .so .o .so
+-- Computing dependencies for `numerical/Math.sac'
+-- Computing dependencies for `numerical/MathArray.sac'
+-- Computing dependencies for `numerical/Numerical.sac'
+-- Computing dependencies for `random/Xoshiro.sac'
+-- Computing dependencies for `stdio/BinFile.sac'
+-- Computing dependencies for `stdio/File.sac'
+-- Computing dependencies for `stdio/IOresources.sac'
+-- Computing dependencies for `stdio/StdIO.sac'
+-- Computing dependencies for `stdio/TermFile.sac'
+-- Computing dependencies for `structures/Array.sac'
+-- Computing dependencies for `structures/ArrayFormat.sac'
+-- Computing dependencies for `structures/Char.sac'
+-- Computing dependencies for `structures/Constants.sac'
+-- Computing dependencies for `structures/String.sac'
+-- Computing dependencies for `structures/Structures.sac'
+-- Computing dependencies for `system/Clock.sac'
+-- Computing dependencies for `system/CommandLine.sac'
+-- Computing dependencies for `system/Dir.sac'
+-- Computing dependencies for `system/Environment.sac'
+-- Computing dependencies for `system/FileSystem.sac'
+-- Computing dependencies for `system/GetOpt.sac'
+-- Computing dependencies for `system/MTClock.sac'
+-- Computing dependencies for `system/Process.sac'
+-- Computing dependencies for `system/RTClock.sac'
+-- Computing dependencies for `system/RTimer.sac'
+-- Computing dependencies for `system/RuntimeError.sac'
+-- Computing dependencies for `system/SysErr.sac'
+-- Computing dependencies for `system/System.sac'
+-- Computing dependencies for `system/Terminal.sac'
+-- Computing dependencies for `system/TimeStamp.sac'
+-- Computing dependencies for `system/World.sac'
+-- Computing dependencies for `auxiliary/Benchmarking.sac'
+-- Computing dependencies for `auxiliary/Interval.sac'
+-- Computing dependencies for `numerical/ComplexMath.sac'
+-- Computing dependencies for `stdio/ComplexIO.sac'
+-- Computing dependencies for `stdio/FibreIO.sac'
+-- Computing dependencies for `stdio/ListIO.sac'
+-- Computing dependencies for `structures/Color8.sac'
+-- Computing dependencies for `structures/Complex.sac'
+-- Computing dependencies for `structures/ComplexBasics.sac'
+-- Computing dependencies for `structures/ComplexScalarArith.sac'
+-- Computing dependencies for `structures/List.sac'
+-- Computing dependencies for `structures/StringArray.sac'
+-- Computing dependencies for `utrace/Indent.sac'
+-- Computing dependencies for `utrace/UTrace.sac'
+-- Computing dependencies for `stdio/ArrayIO.xsac'
+-- Computing dependencies for `stdio/ScalarIO.xsac'
+-- Computing dependencies for `structures/ArrayArith.xsac'
+-- Computing dependencies for `structures/ArrayBasics.xsac'
+-- Computing dependencies for `structures/ArrayReduce.xsac'
+-- Computing dependencies for `structures/ArrayTransform.xsac'
+-- Computing dependencies for `structures/ScalarArith.xsac'
+-- Computing dependencies for `auxiliary/Hiding.xsac'
+-- Computing dependencies for `structures/ArrayTransformApl.xsac'
+-- Computing dependencies for `structures/ComplexArrayArith.xsac'
+-- Computing dependencies for `structures/ComplexArrayBasics.xsac'
+-- Computing dependencies for `structures/ComplexArrayTransform.xsac'
+-- Computing dependencies for `structures/Quaternion.xsac'
+-- Checking if sac2c supports flag "-Xp"
+-- Checking if sac2c supports flag "-Xp" - found
+-- Target `mt_pth' build properties: host mt-pth .so .o .so
+-- Computing dependencies for `numerical/Math.sac'
+-- Computing dependencies for `numerical/MathArray.sac'
+-- Computing dependencies for `numerical/Numerical.sac'
+-- Computing dependencies for `random/Xoshiro.sac'
+-- Computing dependencies for `stdio/BinFile.sac'
+-- Computing dependencies for `stdio/File.sac'
+-- Computing dependencies for `stdio/IOresources.sac'
+-- Computing dependencies for `stdio/StdIO.sac'
+-- Computing dependencies for `stdio/TermFile.sac'
+-- Computing dependencies for `structures/Array.sac'
+-- Computing dependencies for `structures/ArrayFormat.sac'
+-- Computing dependencies for `structures/Char.sac'
+-- Computing dependencies for `structures/Constants.sac'
+-- Computing dependencies for `structures/String.sac'
+-- Computing dependencies for `structures/Structures.sac'
+-- Computing dependencies for `system/Clock.sac'
+-- Computing dependencies for `system/CommandLine.sac'
+-- Computing dependencies for `system/Dir.sac'
+-- Computing dependencies for `system/Environment.sac'
+-- Computing dependencies for `system/FileSystem.sac'
+-- Computing dependencies for `system/GetOpt.sac'
+-- Computing dependencies for `system/MTClock.sac'
+-- Computing dependencies for `system/Process.sac'
+-- Computing dependencies for `system/RTClock.sac'
+-- Computing dependencies for `system/RTimer.sac'
+-- Computing dependencies for `system/RuntimeError.sac'
+-- Computing dependencies for `system/SysErr.sac'
+-- Computing dependencies for `system/System.sac'
+-- Computing dependencies for `system/Terminal.sac'
+-- Computing dependencies for `system/TimeStamp.sac'
+-- Computing dependencies for `system/World.sac'
+-- Computing dependencies for `auxiliary/Benchmarking.sac'
+-- Computing dependencies for `auxiliary/Interval.sac'
+-- Computing dependencies for `numerical/ComplexMath.sac'
+-- Computing dependencies for `stdio/ComplexIO.sac'
+-- Computing dependencies for `stdio/FibreIO.sac'
+-- Computing dependencies for `stdio/ListIO.sac'
+-- Computing dependencies for `structures/Color8.sac'
+-- Computing dependencies for `structures/Complex.sac'
+-- Computing dependencies for `structures/ComplexBasics.sac'
+-- Computing dependencies for `structures/ComplexScalarArith.sac'
+-- Computing dependencies for `structures/List.sac'
+-- Computing dependencies for `structures/StringArray.sac'
+-- Computing dependencies for `utrace/Indent.sac'
+-- Computing dependencies for `utrace/UTrace.sac'
+-- Computing dependencies for `stdio/ArrayIO.xsac'
+-- Computing dependencies for `stdio/ScalarIO.xsac'
+-- Computing dependencies for `structures/ArrayArith.xsac'
+-- Computing dependencies for `structures/ArrayBasics.xsac'
+-- Computing dependencies for `structures/ArrayReduce.xsac'
+-- Computing dependencies for `structures/ArrayTransform.xsac'
+-- Computing dependencies for `structures/ScalarArith.xsac'
+-- Computing dependencies for `auxiliary/Hiding.xsac'
+-- Computing dependencies for `structures/ArrayTransformApl.xsac'
+-- Computing dependencies for `structures/ComplexArrayArith.xsac'
+-- Computing dependencies for `structures/ComplexArrayBasics.xsac'
+-- Computing dependencies for `structures/ComplexArrayTransform.xsac'
+-- Computing dependencies for `structures/Quaternion.xsac'
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/rhensen/tmp_stdlib_build_orig_20_7985027/build
+
+Running Make build...
+make[1]: Entering directory '/home/rhensen/tmp_stdlib_build_orig_20_7985027/build'
+make[2]: Entering directory '/home/rhensen/tmp_stdlib_build_orig_20_7985027/build'
+make[3]: Entering directory '/home/rhensen/tmp_stdlib_build_orig_20_7985027/build'
+make[3]: Entering directory '/home/rhensen/tmp_stdlib_build_orig_20_7985027/build'
+make[3]: Entering directory '/home/rhensen/tmp_stdlib_build_orig_20_7985027/build'
+make[3]: Entering directory '/home/rhensen/tmp_stdlib_build_orig_20_7985027/build'
+make[3]: Leaving directory '/home/rhensen/tmp_stdlib_build_orig_20_7985027/build'
+make[3]: Leaving directory '/home/rhensen/tmp_stdlib_build_orig_20_7985027/build'
+make[3]: Leaving directory '/home/rhensen/tmp_stdlib_build_orig_20_7985027/build'
+make[3]: Leaving directory '/home/rhensen/tmp_stdlib_build_orig_20_7985027/build'
+make[3]: Entering directory '/home/rhensen/tmp_stdlib_build_orig_20_7985027/build'
+make[3]: Entering directory '/home/rhensen/tmp_stdlib_build_orig_20_7985027/build'
+make[3]: Entering directory '/home/rhensen/tmp_stdlib_build_orig_20_7985027/build'
+make[3]: Entering directory '/home/rhensen/tmp_stdlib_build_orig_20_7985027/build'
+[  0%] [34m[1mBuilding module `ComplexScalarArith' for target `seq'[0m
+[  0%] [34m[1mCreating package sac2crc file in user's home directory[0m
+[  0%] [34m[1mBuilding `ScalarArith.sac' from `ScalarArith.xsac' for target `seq'[0m
+[  0%] [34m[1mBuilding `Quaternion.sac' from `Quaternion.xsac' for target `seq'[0m
+-- Creating sac2crc package file
+make[3]: Leaving directory '/home/rhensen/tmp_stdlib_build_orig_20_7985027/build'
+[  0%] [34m[1mBuilding module `ScalarArith' for target `seq'[0m
+[  1%] [34m[1mBuilding module `Quaternion' for target `seq'[0m
+[  1%] Built target create-sac2crc-file
+make[3]: Entering directory '/home/rhensen/tmp_stdlib_build_orig_20_7985027/build'
+make[3]: Leaving directory '/home/rhensen/tmp_stdlib_build_orig_20_7985027/build'
+make[3]: Leaving directory '/home/rhensen/tmp_stdlib_build_orig_20_7985027/build'
+make[3]: Entering directory '/home/rhensen/tmp_stdlib_build_orig_20_7985027/build'
+[  2%] [34m[1mBuilding `ArrayBasics.sac' from `ArrayBasics.xsac' for target `seq'[0m
+[  2%] [34m[1mBuilding module `ArrayBasics' for target `seq'[0m
+make[3]: Leaving directory '/home/rhensen/tmp_stdlib_build_orig_20_7985027/build'
+[  2%] Built target seq-module-ScalarArith
+make[3]: Leaving directory '/home/rhensen/tmp_stdlib_build_orig_20_7985027/build'
+[  2%] Built target seq-module-Quaternion
+make[3]: Leaving directory '/home/rhensen/tmp_stdlib_build_orig_20_7985027/build'
+[  2%] Built target seq-module-ArrayBasics
+make[2]: Leaving directory '/home/rhensen/tmp_stdlib_build_orig_20_7985027/build'
+make[1]: Leaving directory '/home/rhensen/tmp_stdlib_build_orig_20_7985027/build'
+ERROR: Make build failed
+
+
+###############################################################################
+Science Cluster
+Job 7985027 for user 'rhensen'
+Finished at: Tue Dec 16 14:12:25 CET 2025
+
+Job details:
+============
+
+Name                : stdlib-orig-20
+User                : rhensen
+Partition           : csmpi_fpga_long
+Nodes               : cn132
+Cores               : 4
+State               : FAILED
+Submit              : 2025-12-16T12:36:23
+Start               : 2025-12-16T14:11:58
+End                 : 2025-12-16T14:12:25
+Reserved walltime   : 02:00:00
+Used walltime       : 00:00:27
+Used CPU time       : 00:00:45 (efficiency: 42.51%)
+% User (Computation): 88.49%
+% System (I/O)      : 11.51%
+Mem reserved        : 14G
+Max Mem used        : 0.00  (cn132)
+Max Disk Write      : 0.00  (cn132)
+Max Disk Read       : 0.00  (cn132)
+

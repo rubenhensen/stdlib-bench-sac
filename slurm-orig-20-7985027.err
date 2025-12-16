@@ -1,0 +1,58 @@
+[0m
+ * Stdlib configuration done.
+ *
+ * sac2c executable:       /home/rhensen/sacoriginal/sac2c/build_p/sac2c_p
+ * local builddir:         /home/rhensen/tmp_stdlib_build_orig_20_7985027/build/lib
+ * targets:                seq;mt_pth
+ * sac2c CPP flags:        -DHAVE_CONFIG_H;-cppI/home/rhensen/tmp_stdlib_build_orig_20_7985027/build/include;-cppI/home/rhensen/Stdlib/include
+ * sac2c extra flags:      -DHAVE_CONFIG_H;-I/home/rhensen/tmp_stdlib_build_orig_20_7985027/build/include;-I/home/rhensen/Stdlib/include
+ *
+ * Configuration state:
+ * - full types:           OFF
+ * - build generic         OFF
+ * - build extended:       ON
+ *
+ * Packaging state:
+ * - is release:           FALSE
+[0m
+Abort:
+  Error while parsing 'n,�8'.
+Compilation failed while initial.
+//home/rhensen/Stdlib/src/structures/ComplexScalarArith.sac:11:18: error:
+  10. 
+  11. use ComplexBasics: { complex, toc, tod, real };
+                       ↑
+  12. use Math: { sqrt };
+  13. 
+  
+  cannot find library for module `ComplexBasics'!
+//home/rhensen/Stdlib/src/structures/ComplexScalarArith.sac:12:9: error:
+  11. use ComplexBasics: { complex, toc, tod, real };
+  12. use Math: { sqrt };
+              ↑
+  13. 
+  14. export all;
+  
+  cannot find library for module `Math'!
+//home/rhensen/Stdlib/src/structures/ComplexScalarArith.sac:22:8: error:
+  21. 
+  22. inline complex +(complex A, complex B)
+             ↑
+  23. {
+  24.     rA, iA = tod(A);
+  
+  type expected, `complex' found
+//home/rhensen/Stdlib/src/structures/ComplexScalarArith.sac:152:1: error:
+  151. }
+  152. 
+       ↑
+  
+  function body or semicolon expected
+Abort:
+  Failed to construct a syntax tree for `ComplexScalarArith.sac'
+  
+Compilation failed while Loading SAC program, 4 error(s).
+make[3]: *** [src-seq/CMakeFiles/seq-module-ComplexScalarArith.dir/build.make:74: lib/host/seq/libComplexScalarArithMod.so] Error 1
+make[2]: *** [CMakeFiles/Makefile2:1466: src-seq/CMakeFiles/seq-module-ComplexScalarArith.dir/all] Error 2
+make[2]: *** Waiting for unfinished jobs....
+make[1]: *** [Makefile:156: all] Error 2
