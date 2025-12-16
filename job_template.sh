@@ -22,9 +22,8 @@ BUILD_TARGETS="__BUILD_TARGETS__"
 BUILD_SYSTEM="__BUILD_SYSTEM__"
 SAC2C_DIR="__SAC2C_DIR__"
 
-# Create unique temporary build directory FIRST
+# Create unique temporary build directory
 TEMP_BUILD_DIR="${HOME}/tmp_stdlib_build_${COMPILER}_${RUN_NUM}_${SLURM_JOB_ID}"
-TEMP_HOME_DIR="${TEMP_BUILD_DIR}/home"
 
 # Isolate library paths to prevent cross-contamination between compilers
 # This ensures each compiler uses its own prelude and runtime libraries
@@ -36,22 +35,16 @@ unset SAC2C_STANDARD_PACKAGES
 unset SAC2C_INCLUDE_PATH
 unset SAC2C_LIBRARY_PATH
 
-# Create temporary home directory for complete isolation
-mkdir -p "${TEMP_HOME_DIR}"
+# Remove any cached sac2crc files that might cause conflicts
+rm -f "${HOME}/.sac2crc" "${HOME}/.sac2c"*
 
-# Set HOME to isolated directory to prevent cache contamination
-# This ensures no shared ~/.sac2crc or other cached files
-export ORIGINAL_HOME="${HOME}"
-export HOME="${TEMP_HOME_DIR}"
-
-# Set compiler-specific paths
+# Set compiler-specific paths - critical for library isolation
 export SAC2CRC="${SAC2C_DIR}/sac2crc"
 export LD_LIBRARY_PATH="${SAC2C_DIR}/runtime_build/src/runtime_libraries-build/lib:${LD_LIBRARY_PATH}"
 
-# Isolate cache directories
-export XDG_CACHE_HOME="${TEMP_HOME_DIR}/.cache"
+# Isolate temp directory
 export TMPDIR="${TEMP_BUILD_DIR}/tmp"
-mkdir -p "${XDG_CACHE_HOME}" "${TMPDIR}"
+mkdir -p "${TMPDIR}"
 
 echo "========================================"
 echo "Stdlib Compilation Benchmark"
@@ -69,8 +62,8 @@ echo "CPUs: $SLURM_CPUS_PER_TASK"
 echo "========================================"
 echo ""
 
-# Initialize result CSV for this job (use ORIGINAL_HOME before we change HOME)
-SUBMIT_DIR="${SLURM_SUBMIT_DIR:-${ORIGINAL_HOME}/stdlib-bench-sac}"
+# Initialize result CSV for this job
+SUBMIT_DIR="${SLURM_SUBMIT_DIR:-$(pwd)}"
 RESULT_FILE="${SUBMIT_DIR}/results/stdlib-${COMPILER}-${RUN_NUM}.csv"
 mkdir -p "${SUBMIT_DIR}/results"
 echo "compiler,run,compilation_time_seconds,job_id,node,timestamp" > "$RESULT_FILE"
@@ -94,9 +87,13 @@ echo "Verifying compiler:"
 echo ""
 
 echo "Environment isolation:"
-echo "  HOME: $HOME"
 echo "  SAC2CRC: $SAC2CRC"
 echo "  LD_LIBRARY_PATH: ${LD_LIBRARY_PATH%%:*} (first entry)"
+if [ -f "$SAC2CRC" ]; then
+    echo "  SAC2CRC file exists: YES"
+else
+    echo "  SAC2CRC file exists: NO (WARNING)"
+fi
 echo ""
 
 echo "Creating temporary build directory..."
