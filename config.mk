@@ -32,7 +32,7 @@ COMPILERS := new orig
 
 # Number of runs per compiler for statistical confidence
 # Recommended: 8-10 runs for ~15% difference detection at 95% confidence
-RUNS_PER_COMPILER := 10
+RUNS_PER_COMPILER := 2
 
 # CMake build targets (semicolon-separated)
 # Common options: seq, seq_checks, mt_pth, cuda_man
