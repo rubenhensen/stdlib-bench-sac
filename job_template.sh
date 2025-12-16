@@ -22,13 +22,36 @@ BUILD_TARGETS="__BUILD_TARGETS__"
 BUILD_SYSTEM="__BUILD_SYSTEM__"
 SAC2C_DIR="__SAC2C_DIR__"
 
+# Create unique temporary build directory FIRST
+TEMP_BUILD_DIR="${HOME}/tmp_stdlib_build_${COMPILER}_${RUN_NUM}_${SLURM_JOB_ID}"
+TEMP_HOME_DIR="${TEMP_BUILD_DIR}/home"
+
 # Isolate library paths to prevent cross-contamination between compilers
 # This ensures each compiler uses its own prelude and runtime libraries
+
+# Clear any existing SAC2C environment variables that might cause conflicts
+unset SAC2CRC
+unset SAC2CBASE
+unset SAC2C_STANDARD_PACKAGES
+unset SAC2C_INCLUDE_PATH
+unset SAC2C_LIBRARY_PATH
+
+# Create temporary home directory for complete isolation
+mkdir -p "${TEMP_HOME_DIR}"
+
+# Set HOME to isolated directory to prevent cache contamination
+# This ensures no shared ~/.sac2crc or other cached files
+export ORIGINAL_HOME="${HOME}"
+export HOME="${TEMP_HOME_DIR}"
+
+# Set compiler-specific paths
 export SAC2CRC="${SAC2C_DIR}/sac2crc"
 export LD_LIBRARY_PATH="${SAC2C_DIR}/runtime_build/src/runtime_libraries-build/lib:${LD_LIBRARY_PATH}"
 
-# Create unique temporary build directory in home
-TEMP_BUILD_DIR="${HOME}/tmp_stdlib_build_${COMPILER}_${RUN_NUM}_${SLURM_JOB_ID}"
+# Isolate cache directories
+export XDG_CACHE_HOME="${TEMP_HOME_DIR}/.cache"
+export TMPDIR="${TEMP_BUILD_DIR}/tmp"
+mkdir -p "${XDG_CACHE_HOME}" "${TMPDIR}"
 
 echo "========================================"
 echo "Stdlib Compilation Benchmark"
@@ -46,8 +69,8 @@ echo "CPUs: $SLURM_CPUS_PER_TASK"
 echo "========================================"
 echo ""
 
-# Initialize result CSV for this job
-SUBMIT_DIR="${SLURM_SUBMIT_DIR:-$(pwd)}"
+# Initialize result CSV for this job (use ORIGINAL_HOME before we change HOME)
+SUBMIT_DIR="${SLURM_SUBMIT_DIR:-${ORIGINAL_HOME}/stdlib-bench-sac}"
 RESULT_FILE="${SUBMIT_DIR}/results/stdlib-${COMPILER}-${RUN_NUM}.csv"
 mkdir -p "${SUBMIT_DIR}/results"
 echo "compiler,run,compilation_time_seconds,job_id,node,timestamp" > "$RESULT_FILE"
@@ -68,6 +91,12 @@ fi
 
 echo "Verifying compiler:"
 "$SAC2C_PATH" -V 2>&1 | head -3
+echo ""
+
+echo "Environment isolation:"
+echo "  HOME: $HOME"
+echo "  SAC2CRC: $SAC2CRC"
+echo "  LD_LIBRARY_PATH: ${LD_LIBRARY_PATH%%:*} (first entry)"
 echo ""
 
 echo "Creating temporary build directory..."
