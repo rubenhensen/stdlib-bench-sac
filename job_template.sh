@@ -35,12 +35,12 @@ unset SAC2C_STANDARD_PACKAGES
 unset SAC2C_INCLUDE_PATH
 unset SAC2C_LIBRARY_PATH
 
-# Remove any cached sac2crc files that might cause conflicts
-rm -f "${HOME}/.sac2crc" "${HOME}/.sac2c"*
+# Remove any cached sac2crc files/directories that might cause conflicts
+rm -rf "${HOME}/.sac2crc"* "${HOME}/.sac2c"*
 
-# Set compiler-specific paths - critical for library isolation
-export SAC2CRC="${SAC2C_DIR}/sac2crc"
-export LD_LIBRARY_PATH="${SAC2C_DIR}/runtime_build/src/runtime_libraries-build/lib:${LD_LIBRARY_PATH}"
+# Set compiler-specific runtime library path
+# Do NOT set SAC2CRC - let the compiler use its built-in configuration
+export LD_LIBRARY_PATH="${SAC2C_DIR}/runtime_build/src/runtime_libraries-build/lib:${SAC2C_DIR}/runtime_build/src/runtime_libraries-build/lib/prelude:${LD_LIBRARY_PATH}"
 
 # Isolate temp directory
 export TMPDIR="${TEMP_BUILD_DIR}/tmp"
@@ -87,12 +87,15 @@ echo "Verifying compiler:"
 echo ""
 
 echo "Environment isolation:"
-echo "  SAC2CRC: $SAC2CRC"
-echo "  LD_LIBRARY_PATH: ${LD_LIBRARY_PATH%%:*} (first entry)"
-if [ -f "$SAC2CRC" ]; then
-    echo "  SAC2CRC file exists: YES"
+echo "  Compiler dir: $SAC2C_DIR"
+echo "  LD_LIBRARY_PATH (first 2 entries):"
+echo "    ${LD_LIBRARY_PATH%%:*}"
+echo "    $(echo "$LD_LIBRARY_PATH" | cut -d: -f2)"
+echo "  Prelude check:"
+if [ -f "${SAC2C_DIR}/runtime_build/src/runtime_libraries-build/lib/prelude/tree/host/seq/libsacprelude_pTree.so" ]; then
+    echo "    Prelude library found: YES"
 else
-    echo "  SAC2CRC file exists: NO (WARNING)"
+    echo "    Prelude library found: NO (ERROR)"
 fi
 echo ""
 
