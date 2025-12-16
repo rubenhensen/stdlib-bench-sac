@@ -87,6 +87,7 @@ analyze: venv
 	 RUNS_PER_COMPILER=$(RUNS_PER_COMPILER) \
 	 BUILD_TARGETS="$(BUILD_TARGETS)" \
 	 BUILD_SYSTEM="$(BUILD_SYSTEM)" \
+	 COMBINED_FILE="summary/combined_results.csv" \
 	 PYTHON="$(PYTHON)" \
 	 ./scripts/analyze_json.sh
 	@echo ""

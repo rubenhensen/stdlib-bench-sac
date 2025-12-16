@@ -36,7 +36,7 @@ COMPILERS := new orig
 
 # Number of runs per compiler for statistical confidence
 # Recommended: 8-10 runs for ~15% difference detection at 95% confidence
-RUNS_PER_COMPILER := 1
+RUNS_PER_COMPILER := 20
 
 # CMake build targets (semicolon-separated)
 # Common options: seq, seq_checks, mt_pth, cuda_man
@@ -55,7 +55,7 @@ SLURM_PARTITION := csmpi_fpga_long
 
 # Resource allocation per job
 SLURM_CPUS := 32
-SLURM_MEM := 64G
+SLURM_MEM := 124G
 SLURM_TIMELIMIT := 02:00:00
 
 # GPU allocation (set to empty string if not needed)
