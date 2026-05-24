@@ -1,72 +1,57 @@
-# Stdlib Compilation Time Benchmark - Configuration
-# Edit this file to match your environment
+# Stdlib Compilation Time Benchmark — configuration
+# Edit and then run `make` (= `make run`) for an end-to-end rerun.
 
 # =============================================================================
-# Compiler Paths
+# Compiler paths (on the SLURM compute nodes)
 # =============================================================================
+SAC2C_NEW_SLURM       := /home/rhensen/sac2c/build_p/sac2c_p
+SAC2C_ORIG_SLURM      := /home/rhensen/sacoriginal/sac2c/build_p/sac2c_p
+SAC2C_NEW_DIR_SLURM   := /home/rhensen/sac2c/build_p
+SAC2C_ORIG_DIR_SLURM  := /home/rhensen/sacoriginal/sac2c/build_p
 
-# Local paths (for login node)
-SAC2C_NEW_LOCAL := /home/ruben/Repos/sac2c/build_p/sac2c_p
-SAC2C_ORIG_LOCAL := /home/ruben/Repos/sacoriginal/sac2c/build_p/sac2c_p
-
-# SLURM paths (for compute nodes - username may differ)
-SAC2C_NEW_SLURM := /home/rhensen/sac2c/build_p/sac2c_p
-SAC2C_ORIG_SLURM := /home/rhensen/sacoriginal/sac2c/build_p/sac2c_p
-
-# Compiler base directories (parent of build_p)
-SAC2C_NEW_DIR_SLURM := /home/rhensen/sac2c/build_p
-SAC2C_ORIG_DIR_SLURM := /home/rhensen/sacoriginal/sac2c/build_p
+# Source-tree paths for the compiler repos (used to extract commit hashes).
+# Leave empty if no .git is present; the run still works.
+SAC2C_NEW_SRC_SLURM   := /home/rhensen/sac2c
+SAC2C_ORIG_SRC_SLURM  := /home/rhensen/sacoriginal/sac2c
 
 # =============================================================================
-# Stdlib Source Paths
+# Stdlib source path
 # =============================================================================
-
-# Local path
-STDLIB_SRC_LOCAL := /home/ruben/Repos/Stdlib
-
-# SLURM path (compute nodes)
 STDLIB_SRC_SLURM := /home/rhensen/Stdlib
 
 # =============================================================================
-# Build Configuration
+# Build configuration
 # =============================================================================
+COMPILERS          := new orig
+RUNS_PER_COMPILER  := 32
+BUILD_TARGETS      := seq;mt_pth
+BUILD_SYSTEM       := make
 
-# Compiler identifiers (used in filenames and job names)
-COMPILERS := new orig
-
-# Number of runs per compiler for statistical confidence
-# Recommended: 8-10 runs for ~15% difference detection at 95% confidence
-RUNS_PER_COMPILER := 32
-
-# CMake build targets (semicolon-separated)
-# Common options: seq, seq_checks, mt_pth, cuda_man
-BUILD_TARGETS := seq;mt_pth
-
-# Build system (make or ninja)
-BUILD_SYSTEM := make
+# Retry rounds for runs that did not finish SUCCESSfully (0 disables retry)
+MAX_RETRIES        := 2
 
 # =============================================================================
-# SLURM Configuration
+# SLURM configuration
 # =============================================================================
+SLURM_ACCOUNT      := csmpi
+SLURM_PARTITION    := csmpi_fpga_long
+SLURM_CPUS         := 4
+SLURM_MEM          := 14G
+SLURM_TIMELIMIT    := 02:00:00
 
-# SLURM account and partition
-SLURM_ACCOUNT := csmpi
-SLURM_PARTITION := csmpi_fpga_long
+# Optional: cap simultaneous array tasks per compiler. Empty = no cap.
+# (Radboud SLURM docs: `--array 1-N%K` runs at most K tasks concurrently.)
+SLURM_ARRAY_CONCURRENCY :=
 
-# Resource allocation per job
-SLURM_CPUS := 4
-SLURM_MEM := 14G
-SLURM_TIMELIMIT := 02:00:00
-
-# GPU allocation (set to empty string if not needed)
-SLURM_GPU :=
+# Where each task should put its temporary build tree. The Radboud cluster docs
+# state that local /scratch is much, much faster than the home filesystem.
+# We use /scratch/$USER if it exists at run time, otherwise fall back to $HOME.
+# (The fallback logic lives in job_template.sh.)
+TEMP_ROOT_PREFERRED := /scratch
+TEMP_ROOT_FALLBACK  := $$HOME
 
 # =============================================================================
-# Analysis Configuration
+# Analysis configuration
 # =============================================================================
-
-# Python virtual environment path
 VENV_DIR := venv
-
-# Python executable (will be created by 'make venv')
-PYTHON := $(VENV_DIR)/bin/python3
+PYTHON   := $(VENV_DIR)/bin/python3

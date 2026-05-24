@@ -1,75 +1,29 @@
 #!/bin/bash
+# Submit one SLURM array job per compiler. Writes the resulting array-job IDs
+# to job_ids.txt so the wait/status/retry scripts can find them.
 
-# =============================================================================
-# Submit All SLURM Jobs
-# =============================================================================
+set -eu
 
-# Change to project directory
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
-cd "$PROJECT_DIR" || exit 1
+PROJECT_DIR="$(dirname "${SCRIPT_DIR}")"
+cd "${PROJECT_DIR}"
 
-# Configuration comes from environment variables (set by Makefile)
-
-echo "Submitting Stdlib Compilation Benchmark Jobs"
-echo "============================================="
-echo ""
-
-# Create arrays to store job information
-declare -a job_ids
-declare -a job_names
-
-# Create results directory
 mkdir -p results
 
-# Submit each job
-for compiler in $COMPILERS; do
-    for run in $(seq 1 "$RUNS_PER_COMPILER"); do
-        job_script="jobs/stdlib-${compiler}-${run}.sh"
+: > job_ids.txt
+echo "# job_id  compiler  array_spec  submitted_at  note" >> job_ids.txt
 
-        if [ ! -f "$job_script" ]; then
-            echo "ERROR: Job script not found: $job_script"
-            echo "Run 'make jobs' first to generate job scripts."
-            exit 1
-        fi
-
-        echo "Submitting ${compiler}-${run}..."
-
-        # Submit job and capture job ID
-        job_id=$(sbatch --parsable "$job_script")
-
-        if [ $? -eq 0 ]; then
-            job_ids+=("$job_id")
-            job_names+=("${compiler}-${run}")
-            echo "  Job ID: $job_id"
-        else
-            echo "  ERROR: Failed to submit job"
-            exit 1
-        fi
-    done
+for compiler in ${COMPILERS}; do
+  script="jobs/stdlib-${compiler}.array.sh"
+  if [[ ! -f "${script}" ]]; then
+    echo "ERROR: ${script} not found; run 'make jobs' first." >&2
+    exit 1
+  fi
+  echo "Submitting ${script}..."
+  jid="$(sbatch --parsable "${script}")"
+  echo "  -> array job ${jid} for compiler '${compiler}'"
+  echo "${jid}  ${compiler}  1-${RUNS_PER_COMPILER}  $(date -Iseconds)  INITIAL" >> job_ids.txt
 done
 
-echo ""
-echo "============================================="
-echo "All jobs submitted successfully!"
-echo "============================================="
-echo "Total jobs: ${#job_ids[@]}"
-echo ""
-
-# Save job IDs to file for monitoring
-{
-    echo "# Job IDs for Stdlib Compilation Benchmark"
-    echo "# Format: job_id compiler-run"
-    for i in "${!job_ids[@]}"; do
-        echo "${job_ids[$i]} ${job_names[$i]}"
-    done
-} > job_ids.txt
-
-echo "Job IDs saved to: job_ids.txt"
-echo ""
-echo "Monitor jobs with:"
-echo "  make status"
-echo "  squeue -u \$USER"
-echo ""
-echo "Collect results when complete with:"
-echo "  make collect"
+echo
+echo "All array jobs submitted. Monitor: make status  |  wait: make wait"

@@ -1,73 +1,72 @@
 #!/bin/bash
+# Generate one SLURM array script per compiler.
+#
+# Inputs (env vars set by the Makefile):
+#   COMPILERS, RUNS_PER_COMPILER, BUILD_TARGETS, BUILD_SYSTEM,
+#   SLURM_TIMELIMIT, SLURM_CPUS, SLURM_MEM, SLURM_ACCOUNT, SLURM_PARTITION,
+#   SLURM_ARRAY_CONCURRENCY,
+#   SAC2C_NEW_SLURM, SAC2C_ORIG_SLURM,
+#   SAC2C_NEW_DIR_SLURM, SAC2C_ORIG_DIR_SLURM,
+#   SAC2C_NEW_SRC_SLURM, SAC2C_ORIG_SRC_SLURM,
+#   STDLIB_SRC_SLURM,
+#   TEMP_ROOT_PREFERRED, TEMP_ROOT_FALLBACK
+#
+# Output: jobs/stdlib-<compiler>.array.sh (one per compiler)
 
-# =============================================================================
-# Generate SLURM Job Scripts from Template
-# =============================================================================
+set -eu
 
-# Change to project directory
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
-cd "$PROJECT_DIR" || exit 1
+PROJECT_DIR="$(dirname "${SCRIPT_DIR}")"
+cd "${PROJECT_DIR}"
 
-# Configuration comes from environment variables (set by Makefile)
-echo "Generating SLURM job scripts..."
-echo "==============================="
-echo ""
-
-# Create jobs directory
 mkdir -p jobs
 
-# Counter for total jobs
-job_count=0
+ARRAY_SPEC="1-${RUNS_PER_COMPILER}"
+if [[ -n "${SLURM_ARRAY_CONCURRENCY:-}" ]]; then
+  ARRAY_SPEC="${ARRAY_SPEC}%${SLURM_ARRAY_CONCURRENCY}"
+fi
 
-# Generate jobs for each compiler
-for compiler in $COMPILERS; do
-    # Set compiler-specific variables
-    case $compiler in
-        new)
-            SAC2C_PATH="$SAC2C_NEW_SLURM"
-            SAC2C_DIR="$SAC2C_NEW_DIR_SLURM"
-            ;;
-        orig)
-            SAC2C_PATH="$SAC2C_ORIG_SLURM"
-            SAC2C_DIR="$SAC2C_ORIG_DIR_SLURM"
-            ;;
-        *)
-            echo "ERROR: Unknown compiler: $compiler"
-            exit 1
-            ;;
-    esac
+for compiler in ${COMPILERS}; do
+  case "${compiler}" in
+    new)
+      SAC2C_PATH="${SAC2C_NEW_SLURM}"
+      SAC2C_DIR="${SAC2C_NEW_DIR_SLURM}"
+      SAC2C_SRC="${SAC2C_NEW_SRC_SLURM:-}"
+      ;;
+    orig)
+      SAC2C_PATH="${SAC2C_ORIG_SLURM}"
+      SAC2C_DIR="${SAC2C_ORIG_DIR_SLURM}"
+      SAC2C_SRC="${SAC2C_ORIG_SRC_SLURM:-}"
+      ;;
+    *)
+      echo "ERROR: unknown compiler '${compiler}' (extend generate_jobs.sh)" >&2
+      exit 1
+      ;;
+  esac
 
-    echo "Generating jobs for compiler: $compiler"
-    echo "  SAC2C path: $SAC2C_PATH"
+  JOB_NAME="stdlib-${compiler}"
+  OUT="jobs/${JOB_NAME}.array.sh"
 
-    # Generate jobs for each run
-    for run in $(seq 1 "$RUNS_PER_COMPILER"); do
-        job_file="jobs/stdlib-${compiler}-${run}.sh"
-
-        # Create job script from template with substitutions
-        sed -e "s|__COMPILER__|${compiler}|g" \
-            -e "s|__RUN__|${run}|g" \
-            -e "s|__SAC2C_PATH__|${SAC2C_PATH}|g" \
-            -e "s|__SAC2C_DIR__|${SAC2C_DIR}|g" \
-            -e "s|__STDLIB_SRC__|${STDLIB_SRC_SLURM}|g" \
-            -e "s|__BUILD_TARGETS__|${BUILD_TARGETS}|g" \
-            -e "s|__BUILD_SYSTEM__|${BUILD_SYSTEM}|g" \
-            -e "s|__TIMELIMIT__|${SLURM_TIMELIMIT}|g" \
-            -e "s|__CPUS__|${SLURM_CPUS}|g" \
-            -e "s|__MEM__|${SLURM_MEM}|g" \
-            -e "s|__ACCOUNT__|${SLURM_ACCOUNT}|g" \
-            -e "s|__PARTITION__|${SLURM_PARTITION}|g" \
-            -e "s|COMPILER-RUN|${compiler}-${run}|g" \
-            job_template.sh > "$job_file"
-
-        chmod +x "$job_file"
-        job_count=$((job_count + 1))
-        echo "  Generated: $job_file"
-    done
-    echo ""
+  sed -e "s|__COMPILER__|${compiler}|g" \
+      -e "s|__JOB_NAME__|${JOB_NAME}|g" \
+      -e "s|__ARRAY_SPEC__|${ARRAY_SPEC}|g" \
+      -e "s|__SAC2C_PATH__|${SAC2C_PATH}|g" \
+      -e "s|__SAC2C_DIR__|${SAC2C_DIR}|g" \
+      -e "s|__SAC2C_SRC__|${SAC2C_SRC}|g" \
+      -e "s|__STDLIB_SRC__|${STDLIB_SRC_SLURM}|g" \
+      -e "s|__BUILD_TARGETS__|${BUILD_TARGETS}|g" \
+      -e "s|__BUILD_SYSTEM__|${BUILD_SYSTEM}|g" \
+      -e "s|__TIMELIMIT__|${SLURM_TIMELIMIT}|g" \
+      -e "s|__CPUS__|${SLURM_CPUS}|g" \
+      -e "s|__MEM__|${SLURM_MEM}|g" \
+      -e "s|__ACCOUNT__|${SLURM_ACCOUNT}|g" \
+      -e "s|__PARTITION__|${SLURM_PARTITION}|g" \
+      -e "s|__TEMP_ROOT_PREFERRED__|${TEMP_ROOT_PREFERRED:-/scratch}|g" \
+      -e "s|__TEMP_ROOT_FALLBACK__|${TEMP_ROOT_FALLBACK:-\$HOME}|g" \
+      job_template.sh > "${OUT}"
+  chmod +x "${OUT}"
+  echo "wrote ${OUT}  (array ${ARRAY_SPEC})"
 done
 
-echo "==============================="
-echo "Generated $job_count job scripts in jobs/ directory"
-echo "Ready to submit with: make submit"
+echo
+echo "Done. Submit with: make submit  (or 'make run' for one-command end-to-end)"

@@ -1,123 +1,148 @@
 #!/bin/bash
+# Aggregate per-task JSON files into a single combined CSV + per-batch metadata.
+#
+# Outputs:
+#   summary/combined_results.csv  (slim, one row per task)
+#   summary/all_runs.json         (full per-run records)
+#   summary/metadata.json         (batch-level reproducibility footer)
 
-# =============================================================================
-# Collect and Aggregate Results from SLURM Jobs
-# =============================================================================
+set -eu
 
-# Change to project directory
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
-cd "$PROJECT_DIR" || exit 1
+PROJECT_DIR="$(dirname "${SCRIPT_DIR}")"
+cd "${PROJECT_DIR}"
 
-# Configuration comes from environment variables (set by Makefile)
-
-echo "Collecting Stdlib Compilation Benchmark Results"
-echo "================================================"
-echo ""
-
-# Create summary directory
 mkdir -p summary
+PY="${PYTHON:-python3}"
 
-# Initialize combined results file
-combined_file="summary/combined_results.csv"
-echo "compiler,run,compilation_time_seconds,job_id,node,timestamp" > "$combined_file"
+"${PY}" - <<'PY'
+import csv, glob, json, os, sys
+from collections import defaultdict, Counter
 
-# Track found and missing results
-results_found=0
-missing_results=()
-error_results=()
+compilers = os.environ.get("COMPILERS", "new orig").split()
+runs_per  = int(os.environ.get("RUNS_PER_COMPILER", "0"))
 
-# Collect results from each job
-for compiler in $COMPILERS; do
-    echo "Collecting results for compiler: $compiler"
+records = []
+for path in sorted(glob.glob("results/stdlib-*-*.json")):
+    try:
+        with open(path) as f:
+            records.append(json.load(f))
+    except Exception as e:
+        print(f"WARN: could not parse {path}: {e}", file=sys.stderr)
 
-    for run in $(seq 1 "$RUNS_PER_COMPILER"); do
-        result_file="results/stdlib-${compiler}-${run}.csv"
+# Slim CSV — convenient for spreadsheets and quick eyeballing.
+csv_cols = ["compiler", "run", "status", "exit_code",
+            "compilation_time_seconds", "peak_rss_kb",
+            "user_cpu_s", "sys_cpu_s",
+            "job_id", "array_task_id", "node",
+            "started_at", "finished_at"]
+with open("summary/combined_results.csv", "w", newline="") as f:
+    w = csv.DictWriter(f, fieldnames=csv_cols, extrasaction="ignore")
+    w.writeheader()
+    for r in records:
+        w.writerow(r)
 
-        if [ -f "$result_file" ]; then
-            # Check if the file has actual data (not just header)
-            line_count=$(wc -l < "$result_file")
+# Full JSON, one object per task.
+with open("summary/all_runs.json", "w") as f:
+    json.dump(records, f, indent=2, sort_keys=True)
 
-            if [ "$line_count" -gt 1 ]; then
-                # Check if there's an ERROR in the compilation time field
-                if grep -q ",ERROR," "$result_file"; then
-                    error_results+=("${compiler}-${run}")
-                    echo "  [ERROR] ${compiler}-${run} - Build failed"
-                else
-                    # Skip header and append to combined file
-                    tail -n +2 "$result_file" >> "$combined_file"
-                    results_found=$((results_found + 1))
-                    echo "  [✓] ${compiler}-${run}"
-                fi
-            else
-                missing_results+=("${compiler}-${run}")
-                echo "  [EMPTY] ${compiler}-${run} - File has no data"
-            fi
-        else
-            missing_results+=("${compiler}-${run}")
-            echo "  [MISSING] ${compiler}-${run}"
-        fi
-    done
-    echo ""
-done
+# Batch-level metadata: dedup across tasks, warn on divergence.
+def first_nonempty(vs):
+    for v in vs:
+        if v: return v
+    return ""
 
-echo "================================================"
-echo "Results Summary:"
-echo "================================================"
-total_expected=$(echo "$(echo "$COMPILERS" | wc -w) * $RUNS_PER_COMPILER" | bc)
-echo "Found: $results_found/$total_expected successful result files"
+batch = {
+    "config": {
+        "compilers": compilers,
+        "runs_per_compiler": runs_per,
+        "build_targets": os.environ.get("BUILD_TARGETS", ""),
+        "build_system": os.environ.get("BUILD_SYSTEM", ""),
+    },
+    "slurm": {
+        "partition": os.environ.get("SLURM_PARTITION", ""),
+        "account":   os.environ.get("SLURM_ACCOUNT", ""),
+        "cpus_per_task":      os.environ.get("SLURM_CPUS", ""),
+        "mem_requested":      os.environ.get("SLURM_MEM", ""),
+        "timelimit_requested":os.environ.get("SLURM_TIMELIMIT", ""),
+    },
+    "hardware": {},
+    "compilers": {},
+    "stdlib": {},
+    "totals": {},
+    "warnings": [],
+}
 
-if [ ${#error_results[@]} -gt 0 ]; then
-    echo ""
-    echo "⚠ Build errors: ${#error_results[@]}"
-    echo "Jobs with build errors: ${error_results[@]}"
-    echo ""
-    echo "Check SLURM error logs for details:"
-    for error in "${error_results[@]}"; do
-        echo "  ls -lt slurm-${error}-*.err"
-    done
-fi
+if records:
+    def field(name):
+        seen = []
+        for r in records:
+            v = r.get(name, "")
+            if v and v not in seen:
+                seen.append(v)
+        return seen
 
-if [ ${#missing_results[@]} -gt 0 ]; then
-    echo ""
-    echo "⚠ Missing results: ${#missing_results[@]}"
-    echo "Missing: ${missing_results[@]}"
-    echo ""
-    echo "Check job status with: make status"
-    echo ""
-    echo "Check SLURM error logs:"
-    for missing in "${missing_results[@]}"; do
-        echo "  ls -lt slurm-${missing}-*.err 2>/dev/null | head -1"
-    done
+    for h in ["cpu_model", "total_memory_kb", "kernel", "os_release",
+              "gcc_version", "cmake_version"]:
+        vs = field(h)
+        if not vs:
+            continue
+        batch["hardware"][h] = vs[0]
+        if len(vs) > 1:
+            batch["warnings"].append(f"hardware.{h} varied across tasks: {vs}")
 
-    if [ $results_found -lt 2 ]; then
-        echo ""
-        echo "ERROR: Insufficient results for statistical analysis (need at least 2)."
-        exit 1
-    fi
-else
-    echo ""
-    echo "✓ All results collected successfully!"
-    echo "Combined results saved to: $combined_file"
-    echo ""
-    echo "Total data points: $(tail -n +2 "$combined_file" | wc -l)"
-    echo ""
+    nodes = sorted({r.get("node", "") for r in records if r.get("node")})
+    batch["hardware"]["nodes_used"] = nodes
+    if len(nodes) > 1:
+        batch["warnings"].append(f"runs landed on multiple nodes: {nodes}")
 
-    # Show basic statistics
-    echo "Quick preview:"
-    echo "------------------------------------------------"
-    for compiler in $COMPILERS; do
-        times=$(grep "^${compiler}," "$combined_file" | cut -d',' -f3)
-        if [ -n "$times" ]; then
-            count=$(echo "$times" | wc -l)
-            avg=$(echo "$times" | awk '{sum+=$1} END {printf "%.2f", sum/NR}')
-            min=$(echo "$times" | sort -n | head -1)
-            max=$(echo "$times" | sort -n | tail -1)
-            echo "$compiler: n=$count, avg=${avg}s, min=${min}s, max=${max}s"
-        fi
-    done
-    echo "------------------------------------------------"
-    echo ""
-    echo "Run statistical analysis with:"
-    echo "  make analyze"
-fi
+    for c in compilers:
+        rs = [r for r in records if r.get("compiler") == c]
+        if not rs:
+            continue
+        batch["compilers"][c] = {
+            "sac2c_path":      first_nonempty([r.get("sac2c_path", "") for r in rs]),
+            "sac2c_version_raw": first_nonempty([r.get("sac2c_version_raw", "") for r in rs]),
+            "sac2c_commit":    first_nonempty([r.get("sac2c_commit", "") for r in rs]),
+            "sac2c_branch":    first_nonempty([r.get("sac2c_branch", "") for r in rs]),
+            "sac2c_describe":  first_nonempty([r.get("sac2c_describe", "") for r in rs]),
+        }
+
+    batch["stdlib"] = {
+        "src_path": first_nonempty([r.get("stdlib_src", "") for r in records]),
+        "commit":   first_nonempty([r.get("stdlib_commit", "") for r in records]),
+        "branch":   first_nonempty([r.get("stdlib_branch", "") for r in records]),
+    }
+
+    status_counts = Counter(r.get("status", "?") for r in records)
+    per_compiler = defaultdict(Counter)
+    for r in records:
+        per_compiler[r.get("compiler", "?")][r.get("status", "?")] += 1
+    batch["totals"] = {
+        "records": len(records),
+        "by_status": dict(status_counts),
+        "by_compiler": {c: dict(v) for c, v in per_compiler.items()},
+    }
+
+    starts = [r.get("started_at", "") for r in records if r.get("started_at")]
+    ends   = [r.get("finished_at", "") for r in records if r.get("finished_at")]
+    if starts: batch["started_at"]  = min(starts)
+    if ends:   batch["finished_at"] = max(ends)
+
+with open("summary/metadata.json", "w") as f:
+    json.dump(batch, f, indent=2, sort_keys=True)
+
+print(f"collected {len(records)} run record(s)")
+print("  -> summary/combined_results.csv")
+print("  -> summary/all_runs.json")
+print("  -> summary/metadata.json")
+
+if records:
+    print()
+    print("Per-compiler outcome:")
+    for c in compilers:
+        cs = per_compiler.get(c, Counter())
+        ok = cs.get("SUCCESS", 0)
+        bad = sum(v for k,v in cs.items() if k != "SUCCESS")
+        print(f"  {c}: SUCCESS={ok}, others={bad}  ({dict(cs)})")
+PY
