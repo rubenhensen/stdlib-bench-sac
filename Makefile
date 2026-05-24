@@ -19,6 +19,8 @@ run: venv
 	 SLURM_MEM="$(SLURM_MEM)" \
 	 SLURM_TIMELIMIT="$(SLURM_TIMELIMIT)" \
 	 SLURM_ARRAY_CONCURRENCY="$(SLURM_ARRAY_CONCURRENCY)" \
+	 SLURM_NODELIST="$(SLURM_NODELIST)" \
+	 SLURM_EXCLUDE="$(SLURM_EXCLUDE)" \
 	 SAC2C_NEW_SLURM="$(SAC2C_NEW_SLURM)" \
 	 SAC2C_ORIG_SLURM="$(SAC2C_ORIG_SLURM)" \
 	 SAC2C_NEW_DIR_SLURM="$(SAC2C_NEW_DIR_SLURM)" \
@@ -46,6 +48,8 @@ jobs:
 	 SLURM_ACCOUNT="$(SLURM_ACCOUNT)" \
 	 SLURM_PARTITION="$(SLURM_PARTITION)" \
 	 SLURM_ARRAY_CONCURRENCY="$(SLURM_ARRAY_CONCURRENCY)" \
+	 SLURM_NODELIST="$(SLURM_NODELIST)" \
+	 SLURM_EXCLUDE="$(SLURM_EXCLUDE)" \
 	 SAC2C_NEW_SLURM="$(SAC2C_NEW_SLURM)" \
 	 SAC2C_ORIG_SLURM="$(SAC2C_ORIG_SLURM)" \
 	 SAC2C_NEW_DIR_SLURM="$(SAC2C_NEW_DIR_SLURM)" \
@@ -120,6 +124,8 @@ print-config:
 	@echo "SLURM partition    : $(SLURM_PARTITION)"
 	@echo "SLURM cpus/mem/time: $(SLURM_CPUS) / $(SLURM_MEM) / $(SLURM_TIMELIMIT)"
 	@echo "Array concurrency  : $(SLURM_ARRAY_CONCURRENCY)"
+	@echo "Node pin           : $(SLURM_NODELIST)"
+	@echo "Node exclude       : $(SLURM_EXCLUDE)"
 	@echo "Temp root          : $(TEMP_ROOT_PREFERRED) (fallback: $(TEMP_ROOT_FALLBACK))"
 
 # Move the previous run's artefacts into archive/<timestamp>/ rather than
