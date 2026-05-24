@@ -1,0 +1,244 @@
+Stdlib Compilation Benchmark — Setup instructions for a fresh SLURM account
+============================================================================
+
+Final layout on the cluster will be:
+
+  /home/rhensen/
+  ├── sacoriginal/sac2c/        # "orig" compiler (sac-group/sac2c, develop)
+  │   └── build_p/sac2c_p
+  ├── sac2c/                    # "new" compiler (rhensen/sac2c, progressive-dispatch-clean)
+  │   └── build_p/sac2c_p
+  ├── Stdlib/                   # SaC Standard Library source
+  └── stdlib-bench-sac/         # the benchmark repo (this rerun)
+
+
+Step 0 — Prerequisites (one-time per account)
+---------------------------------------------
+
+SSH from your laptop to the login node:
+
+    ssh rhensen@lilo.science.ru.nl     # or whichever Radboud login node you use
+
+Verify your SSH keys are set up for both forges:
+
+    ssh -T git@gitlab.sac-home.org     # should greet "Welcome to GitLab, ..."
+    ssh -T git@github.com              # should greet "Hi rhensen!"
+
+If either fails, copy your key with `ssh-copy-id` or paste your public key
+into the relevant forge settings before continuing.
+
+
+Step 1 — Clone the three source repos
+-------------------------------------
+
+Always do this on the login node — clones are I/O-bound, not CPU-bound.
+
+    cd ~
+
+    # The two compilers
+    git clone git@gitlab.sac-home.org:sac-group/sac2c.git sacoriginal/sac2c
+    git -C sacoriginal/sac2c checkout develop
+
+    git clone git@gitlab.sac-home.org:rhensen/sac2c.git sac2c
+    git -C sac2c checkout progressive-dispatch-clean
+
+    # The standard library (no build needed yet — the benchmark builds it).
+    # IMPORTANT: Stdlib pulls cmake-common as a submodule; without --init the
+    # benchmark build aborts with "INCLUDE could not find cmake-common/...".
+    git clone --recurse-submodules git@github.com:SacBase/Stdlib.git Stdlib
+
+    # The benchmark
+    git clone git@github.com:rubenhensen/stdlib-bench-sac.git stdlib-bench-sac
+
+If you cloned Stdlib earlier without --recurse-submodules, retrofit:
+
+    git -C ~/Stdlib submodule update --init --recursive
+    ls ~/Stdlib/cmake-common/   # sac2c-variables.cmake, ...  must be present
+
+Quick sanity check the paths match what `config.mk` already expects:
+
+    ls -d ~/sacoriginal/sac2c ~/sac2c ~/Stdlib ~/stdlib-bench-sac
+
+All four should exist; no edits to `config.mk` are needed.
+
+
+Step 2 — Build both compilers (sbatch on a compute node)
+--------------------------------------------------------
+
+The Radboud SLURM docs explicitly say: do not run jobs on login nodes.
+Building sac2c is heavy enough to count. Submit a one-shot batch job that
+builds both compilers, then monitor with squeue.
+
+Discover the partitions you have access to (only needed once):
+
+    sinfo
+    sacctmgr show assoc user=$USER format=Account,Partition,QOS
+
+Create the build job script. Run this on the login node — the heredoc
+just writes a file, no compilation happens here.
+
+The sac2c README says the canonical way to build is the top-level Makefile
+(no manual cmake). It auto-creates both build_d (debug) and build_p
+(production), and the production binary lands at build_p/sac2c_p — which
+is exactly the path the benchmark expects.
+
+cat > ~/build_sac2c.sh <<'EOF'
+#!/bin/bash
+#SBATCH --job-name=build-sac2c
+#SBATCH --output=build-sac2c-%j.out
+#SBATCH --error=build-sac2c-%j.err
+#SBATCH --partition=cncz
+#SBATCH --account=csmpi
+#SBATCH --cpus-per-task=8
+#SBATCH --mem=16G
+#SBATCH --time=01:00:00
+set -euo pipefail
+echo "Node: $(hostname)   Started: $(date -Iseconds)"
+
+build_one () {
+    local src="$1"
+    echo "==== building ${src} ===="
+    cd "${src}"
+    rm -rf build_d build_p
+    git submodule update --init --recursive
+    make -j "${SLURM_CPUS_PER_TASK}"
+    ls -l "${src}/build_p/sac2c_p"
+    "${src}/build_p/sac2c_p" -V
+}
+
+build_one ~/sacoriginal/sac2c
+build_one ~/sac2c
+
+echo "Finished: $(date -Iseconds)"
+EOF
+
+Submit it (capture the job ID with --parsable):
+
+    sbatch --parsable ~/build_sac2c.sh
+
+Watch progress:
+
+    squeue -u $USER                        # quick view; vanishes when job is done
+    tail -f build-sac2c-<jobid>.out        # live build output
+    sacct -j <jobid> --format=JobID,State,Elapsed,ExitCode   # post-mortem
+
+When the job leaves the squeue list (State=COMPLETED, ExitCode=0:0), verify
+both binaries exist and run:
+
+    ls -l ~/sacoriginal/sac2c/build_p/sac2c_p ~/sac2c/build_p/sac2c_p
+    ~/sacoriginal/sac2c/build_p/sac2c_p -V
+    ~/sac2c/build_p/sac2c_p -V
+
+If the build fails (look at build-sac2c-<jobid>.err and the tail of .out):
+
+  * Missing deps (libxml2, libuuid, lpsolve, …) — install via the cluster's
+    module system or ask the SaC group for the canonical build recipe.
+    Don't guess and debug later.
+  * The sac2c top-level `make` runs both Debug and Product builds; this
+    takes longer than just one build. If you're tight on time, bump
+    --cpus-per-task and --time accordingly.
+
+
+Step 3 — Smoke-test the benchmark with N=2
+------------------------------------------
+
+Before burning two hours × 64 runs, run a tiny end-to-end smoke test to
+catch any path/permissions issue early.
+
+    cd ~/stdlib-bench-sac
+    make print-config              # confirms resolved paths
+    make venv                      # one-time Python env for the analysis step
+
+Edit `config.mk` temporarily:
+
+    RUNS_PER_COMPILER  := 2
+    MAX_RETRIES        := 1
+
+Then run the whole pipeline:
+
+    make            # = make run; goes through jobs → submit → wait → retry → collect → report
+
+This should take ~16 min wall clock (2 builds × ~960 s, in parallel across
+the array). When it finishes, check:
+
+    cat summary/report.md
+    ls results/                    # should contain 4 .json files
+    jq .status,.peak_rss_kb,.sac2c_commit results/stdlib-new-1.json
+
+All four runs should report "status": "SUCCESS" with non-null peak_rss_kb
+and a real sac2c_commit. If any field is empty, fix it before doing the
+full run.
+
+
+Step 4 — Full rerun (the real benchmark)
+----------------------------------------
+
+Archive the smoke-test artefacts and edit the config back to the real
+values:
+
+    make clean                     # moves the test run to archive/<timestamp>/
+
+In `config.mk`:
+
+    RUNS_PER_COMPILER  := 32
+    MAX_RETRIES        := 2
+
+Kick off the full run:
+
+    make            # again = make run
+
+This will keep your shell open until everything finishes (~a few hours
+depending on cluster load). If you want to detach, run inside `tmux`:
+
+    tmux new -s bench
+    make
+    # Ctrl+b d   to detach; tmux attach -t bench to reattach later
+
+
+Step 5 — Collect the deliverables
+---------------------------------
+
+When `make` returns:
+
+    ls summary/
+    # combined_results.csv  — slim CSV
+    # all_runs.json         — full per-task records
+    # metadata.json         — reproducibility footer (compiler commits, hardware, etc.)
+    # analysis.json         — per-compiler stats + Welch's t-test
+    # report.md             — human-readable
+    # thesis_snippet.typ    — Typst figure ready to paste into source.md
+
+    cat summary/report.md
+    cat summary/thesis_snippet.typ
+
+Copy `summary/` back to your laptop:
+
+    scp -r rhensen@lilo.science.ru.nl:~/stdlib-bench-sac/summary ./stdlib-bench-summary
+
+Drop the Typst snippet into the thesis where the current <stdlib-res>
+figure lives.
+
+
+Future reruns
+-------------
+
+Whenever you want to redo this with newer compiler commits:
+
+    ssh rhensen@lilo.science.ru.nl
+    cd ~/sacoriginal/sac2c && git pull && git submodule update --init --recursive
+    cd ~/sac2c             && git pull && git submodule update --init --recursive
+    cd ~/Stdlib            && git pull && git submodule update --init --recursive
+    # Rebuild on a compute node (Step 2 again)
+    cd ~/stdlib-bench-sac && git pull
+    make clean
+    make
+
+
+Notes
+-----
+
+* Always use sac2c's top-level Makefile (see Step 2 script). It creates
+  both build_d and build_p, with sac2c_p in build_p/. Don't invoke cmake
+  manually unless you need custom flags; the cmake script's accepted
+  build types are case-sensitive (DEBUG, RELEASE — uppercase) and the
+  top-level make handles that for you.
