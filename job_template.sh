@@ -176,28 +176,14 @@ export OS_RELEASE="$( ( . /etc/os-release 2>/dev/null && echo "${PRETTY_NAME}" )
 export CPU_MODEL="$(lscpu 2>/dev/null | awk -F: '/^Model name/ {gsub(/^ +/,"",$2); print $2; exit}')"
 export TOTAL_MEMORY_KB="$(awk '/^MemTotal:/ {print $2}' /proc/meminfo 2>/dev/null || echo 0)"
 
-# -------- 3. Isolated SAC2C environment -----------------------------------
-unset SAC2CRC SAC2C_STANDARD_PACKAGES SAC2C_INCLUDE_PATH SAC2C_LIBRARY_PATH
-rm -rf "${HOME}/.sac2crc" "${HOME}/.sac2crc"* "${HOME}/.sac2c"*
-
-export SAC2CBASE="${SAC2C_DIR}"
-PRELUDE_PATH="${SAC2C_DIR}/runtime_build/src/runtime_libraries-build/lib/prelude"
-export LD_LIBRARY_PATH="${SAC2C_DIR}/runtime_build/src/runtime_libraries-build/lib:${PRELUDE_PATH}:${LD_LIBRARY_PATH:-}"
-
-mkdir -p "${HOME}/.sac2crc"
-cat > "${HOME}/.sac2crc/sac2crc.release.prelude" <<EOF
-/* Auto-generated for ${COMPILER} compiler */
-target add_local:
-TREEPATH       += "${PRELUDE_PATH}:"
-LIBPATH        += "${PRELUDE_PATH}:"
-
-target default_sbi :: add_local:
-EOF
-cp "${HOME}/.sac2crc/sac2crc.release.prelude" "${HOME}/.sac2crc/sac2crc.debug.prelude"
-
-# -------- 4. Pick a fast temp build directory -----------------------------
+# -------- 3. Per-task scratch root, isolated $HOME, sac2crc -----------------
 # Radboud cluster docs: local /scratch is much, much faster than $HOME.
-# Use /scratch/<user> if it exists and is writable, otherwise fall back.
+# Use /scratch/<user>/<task-id> if writable, otherwise fall back to the real
+# $HOME parent. Critically, we also override $HOME to a per-task directory
+# so that parallel array tasks (and the two compilers' tasks running
+# concurrently) cannot race on the single shared ~/.sac2crc/ directory.
+# sac2c looks for its prelude config under $HOME/.sac2crc/ — giving every
+# task its own $HOME removes the race entirely.
 choose_temp_root () {
   local pref="${TEMP_ROOT_PREFERRED:-/scratch}/${USER:-$LOGNAME}"
   if mkdir -p "${pref}" 2>/dev/null && [[ -w "${pref}" ]]; then
@@ -206,12 +192,35 @@ choose_temp_root () {
   echo "${TEMP_ROOT_FALLBACK:-$HOME}"
 }
 TEMP_ROOT="$(choose_temp_root)"
-TEMP_BUILD_DIR="${TEMP_ROOT}/tmp_stdlib_build_${COMPILER}_${RUN_NUM}_${JOB_ID}_${TASK_ID}"
+TASK_ROOT="${TEMP_ROOT}/stdlib_bench_${COMPILER}_${RUN_NUM}_${JOB_ID}_${TASK_ID}"
+TEMP_BUILD_DIR="${TASK_ROOT}/build"
+export HOME="${TASK_ROOT}/home"      # per-task $HOME — no .sac2crc race
+export TMPDIR="${TASK_ROOT}/tmp"
 export TEMP_BUILD_ROOT="${TEMP_ROOT}"
-export TMPDIR="${TEMP_BUILD_DIR}/tmp"
-mkdir -p "${TMPDIR}" "${TEMP_BUILD_DIR}/build"
+mkdir -p "${HOME}" "${TMPDIR}" "${TEMP_BUILD_DIR}/build"
 
 echo "Using temp build root: ${TEMP_ROOT}"
+echo "Per-task HOME        : ${HOME}"
+
+# -------- 4. sac2c environment in the isolated $HOME ----------------------
+# Because $HOME is freshly created per task, no rm is needed — the directory
+# starts empty. We just write the per-compiler prelude config and go.
+unset SAC2CRC SAC2C_STANDARD_PACKAGES SAC2C_INCLUDE_PATH SAC2C_LIBRARY_PATH
+export SAC2CBASE="${SAC2C_DIR}"
+PRELUDE_PATH="${SAC2C_DIR}/runtime_build/src/runtime_libraries-build/lib/prelude"
+export LD_LIBRARY_PATH="${SAC2C_DIR}/runtime_build/src/runtime_libraries-build/lib:${PRELUDE_PATH}:${LD_LIBRARY_PATH:-}"
+
+mkdir -p "${HOME}/.sac2crc"
+cat > "${HOME}/.sac2crc/sac2crc.release.prelude" <<EOF
+/* Auto-generated for ${COMPILER} compiler, task ${TASK_ID} of job ${JOB_ID} */
+target add_local:
+TREEPATH       += "${PRELUDE_PATH}:"
+LIBPATH        += "${PRELUDE_PATH}:"
+
+target default_sbi :: add_local:
+EOF
+cp "${HOME}/.sac2crc/sac2crc.release.prelude" "${HOME}/.sac2crc/sac2crc.debug.prelude"
+
 cd "${TEMP_BUILD_DIR}/build" || {
   emit_json "ERROR" 4 "" "" "" "" "cannot cd to build dir"
   exit 4
@@ -281,5 +290,6 @@ echo "Record written to     : ${RESULT_JSON}"
 echo "========================================================================"
 
 cd /
-rm -rf "${TEMP_BUILD_DIR}"
+# Nuke the whole per-task tree (build dir + per-task $HOME + tmp).
+rm -rf "${TASK_ROOT}"
 exit ${BUILD_EXIT}
