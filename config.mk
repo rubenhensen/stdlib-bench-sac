@@ -33,15 +33,21 @@ MAX_RETRIES        := 2
 # =============================================================================
 # SLURM configuration
 # =============================================================================
+# Discovered via `sinfo` + `sacctmgr show assoc user=$USER` on cn00:
+#   * Account csmpi works (icis also exists but csmpi is the research group).
+#   * Only two public partitions: cncz (24 h cap) and cnczshort (12 h cap).
+#   * DefMemPerCPU on cncz is only 2 GB, so --mem must be set explicitly.
+#   * cncz currently has 3 nodes (cn00 idle, cn58 plnd, cn99 mix).
 SLURM_ACCOUNT      := csmpi
-SLURM_PARTITION    := csmpi_fpga_long
+SLURM_PARTITION    := cncz
 SLURM_CPUS         := 4
 SLURM_MEM          := 14G
 SLURM_TIMELIMIT    := 02:00:00
 
 # Optional: cap simultaneous array tasks per compiler. Empty = no cap.
 # (Radboud SLURM docs: `--array 1-N%K` runs at most K tasks concurrently.)
-SLURM_ARRAY_CONCURRENCY :=
+# With only 3 nodes in cncz, cap at 4 to leave room for other cluster users.
+SLURM_ARRAY_CONCURRENCY := 4
 
 # Where each task should put its temporary build tree. The Radboud cluster docs
 # state that local /scratch is much, much faster than the home filesystem.
