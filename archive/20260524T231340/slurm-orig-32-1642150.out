@@ -1,0 +1,19 @@
+========================================================================
+Stdlib Compilation Benchmark — task orig/32
+========================================================================
+Compiler : orig
+Run      : 32
+Job ID   : 1642150 (task 32)
+Node     : cn99
+sac2c    : /home/rhensen/sacoriginal/sac2c/build_p/sac2c_p
+Stdlib   : /home/rhensen/Stdlib
+Targets  : seq;mt_pth
+Build    : make
+CPUs     : 4
+Mem cap  : 14G
+Time cap : 02:00:00
+========================================================================
+Collecting environment metadata...
+Using temp build root: /scratch/rhensen
+Per-task HOME        : /scratch/rhensen/stdlib_bench_orig_32_1642150_32/home
+Starting timed clean build (cmake + make -j 4)...

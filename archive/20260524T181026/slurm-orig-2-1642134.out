@@ -1,0 +1,86 @@
+========================================================================
+Stdlib Compilation Benchmark — task orig/2
+========================================================================
+Compiler : orig
+Run      : 2
+Job ID   : 1642134 (task 2)
+Node     : cn99
+sac2c    : /home/rhensen/sacoriginal/sac2c/build_p/sac2c_p
+Stdlib   : /home/rhensen/Stdlib
+Targets  : seq;mt_pth
+Build    : make
+CPUs     : 4
+Mem cap  : 14G
+Time cap : 02:00:00
+========================================================================
+Collecting environment metadata...
+Using temp build root: /scratch/rhensen
+Starting timed clean build (cmake + make -j 4)...
+----- last 60 lines of build log -----
+[  3%] Built target seq-module-Constants
+[  4%] [34m[1mGenerating /scratch/rhensen/tmp_stdlib_build_orig_2_1642134_2/build/src-seq/system/src/Terminal/terminal.o for target `seq'[0m
+[  4%] [34m[1mBuilding module `Terminal' for target `seq'[0m
+[  4%] Built target seq-module-Terminal
+[  5%] [34m[1mBuilding `Quaternion.sac' from `Quaternion.xsac' for target `seq'[0m
+[  5%] [34m[1mBuilding module `Quaternion' for target `seq'[0m
+[  5%] Built target seq-module-ScalarArith
+[  6%] [34m[1mGenerating /scratch/rhensen/tmp_stdlib_build_orig_2_1642134_2/build/src-seq/system/src/MTClock/mtclock.o for target `seq'[0m
+[  6%] [34m[1mBuilding module `MTClock' for target `seq'[0m
+[  6%] Built target seq-module-MTClock
+[  6%] [34m[1mGenerating /scratch/rhensen/tmp_stdlib_build_orig_2_1642134_2/build/src-seq/system/src/RTClock/rtclock.o for target `seq'[0m
+[  6%] [34m[1mBuilding module `RTClock' for target `seq'[0m
+[  6%] Built target seq-module-RTClock
+[  6%] [34m[1mGenerating /scratch/rhensen/tmp_stdlib_build_orig_2_1642134_2/build/src-seq/system/src/TimeStamp/TimeStamp.o for target `seq'[0m
+[  6%] [34m[1mBuilding module `TimeStamp' for target `seq'[0m
+[  6%] Built target seq-module-TimeStamp
+[  6%] [34m[1mBuilding module `Interval' for target `seq'[0m
+[  6%] Built target seq-module-Interval
+[  6%] [34m[1mGenerating /scratch/rhensen/tmp_stdlib_build_orig_2_1642134_2/build/src-seq/structures/src/List/List.o for target `seq'[0m
+[  7%] [34m[1mBuilding module `List' for target `seq'[0m
+[  7%] Built target seq-module-List
+[  8%] [34m[1mBuilding `Hiding.sac' from `Hiding.xsac' for target `seq'[0m
+[  8%] [34m[1mBuilding module `Hiding' for target `seq'[0m
+[  8%] Built target seq-module-ArrayBasics
+[  8%] [34m[1mBuilding `ScalarArith.sac' from `ScalarArith.xsac' for target `mt_pth'[0m
+[  9%] [34m[1mBuilding module `ScalarArith' for target `mt_pth'[0m
+[  9%] Built target seq-module-Hiding
+[  9%] [34m[1mBuilding `ArrayBasics.sac' from `ArrayBasics.xsac' for target `mt_pth'[0m
+[  9%] [34m[1mBuilding module `ArrayBasics' for target `mt_pth'[0m
+[  9%] Built target seq-module-Quaternion
+[  9%] [34m[1mGenerating /scratch/rhensen/tmp_stdlib_build_orig_2_1642134_2/build/src-mt_pth/structures/src/Char/Char.o for target `mt_pth'[0m
+[  9%] [34m[1mBuilding module `Char' for target `mt_pth'[0m
+[  9%] Built target mt_pth-module-Char
+[  9%] [34m[1mGenerating /scratch/rhensen/tmp_stdlib_build_orig_2_1642134_2/build/src-mt_pth/system/src/World/World.o for target `mt_pth'[0m
+[  9%] [34m[1mBuilding module `World' for target `mt_pth'[0m
+[  9%] Built target mt_pth-module-World
+[ 10%] [34m[1mBuilding `ArrayArith.sac' from `ArrayArith.xsac' for target `mt_pth'[0m
+[ 10%] [34m[1mBuilding module `ArrayArith' for target `mt_pth'[0m
+[ 10%] Built target mt_pth-module-ScalarArith
+[ 10%] [34m[1mGenerating /scratch/rhensen/tmp_stdlib_build_orig_2_1642134_2/build/src-mt_pth/structures/src/Constants/Constants.o for target `mt_pth'[0m
+[ 10%] [34m[1mBuilding module `Constants' for target `mt_pth'[0m
+[ 10%] Built target mt_pth-module-Constants
+[ 10%] [34m[1mGenerating /scratch/rhensen/tmp_stdlib_build_orig_2_1642134_2/build/src-mt_pth/system/src/Terminal/terminal.o for target `mt_pth'[0m
+[ 11%] [34m[1mBuilding module `Terminal' for target `mt_pth'[0m
+[ 11%] Built target mt_pth-module-Terminal
+[ 11%] [34m[1mBuilding `Quaternion.sac' from `Quaternion.xsac' for target `mt_pth'[0m
+[ 12%] [34m[1mBuilding module `Quaternion' for target `mt_pth'[0m
+[ 12%] Built target mt_pth-module-ArrayBasics
+[ 13%] [34m[1mGenerating /scratch/rhensen/tmp_stdlib_build_orig_2_1642134_2/build/src-mt_pth/system/src/MTClock/mtclock.o for target `mt_pth'[0m
+[ 13%] [34m[1mBuilding module `MTClock' for target `mt_pth'[0m
+Abort:
+  The module 'sacprelude_p' (/home/rhensen/sac2c/build_p/runtime_build/src/runtime_libraries-build/lib/prelude/tree/host/mt-pth/libsacprelude_pTree.so) uses an incompatible syntax tree layout. Please update the module and compiler to the most recent version.
+Compilation failed while Running module system.
+make[4]: *** [src-mt_pth/CMakeFiles/mt_pth-module-MTClock.dir/build.make:76: lib/host/mt-pth/libMTClockMod.so] Error 29
+make[3]: *** [CMakeFiles/Makefile2:2695: src-mt_pth/CMakeFiles/mt_pth-module-MTClock.dir/all] Error 2
+make[3]: *** Waiting for unfinished jobs....
+[ 13%] Built target seq-module-ArrayArith
+[ 13%] Built target mt_pth-module-Quaternion
+[ 13%] Built target mt_pth-module-ArrayArith
+make[2]: *** [Makefile:156: all] Error 2
+--------------------------------------
+
+========================================================================
+Result: ERROR (exit 2)
+Peak RSS              : 2320512 kB
+Record written to     : /home/rhensen/stdlib-bench-sac/results/stdlib-orig-2.json
+========================================================================

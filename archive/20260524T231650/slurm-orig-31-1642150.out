@@ -1,0 +1,29 @@
+
+
+###############################################################################
+Science Cluster
+Job 1642216 for user 'rhensen'
+Finished at: Sun May 24 23:14:16 UTC 2026
+
+Job details:
+============
+
+Name                : stdlib-orig
+User                : rhensen
+Partition           : cncz
+Nodes               : cn99
+Cores               : 4
+State               : COMPLETED
+Submit              : 2026-05-24T19:11:41
+Start               : 2026-05-24T22:48:26
+End                 : 2026-05-24T23:14:16
+Reserved walltime   : 02:00:00
+Used walltime       : 00:25:50
+Used CPU time       : 01:16:52 (efficiency: 74.39%)
+% User (Computation): 96.03%
+% System (I/O)      :  3.97%
+Mem reserved        : 14G
+Max Mem used        : 7.75G (cn99)
+Max Disk Write      : 5.30G (cn99)
+Max Disk Read       : 8.33G (cn99)
+

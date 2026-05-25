@@ -1,0 +1,19 @@
+========================================================================
+Stdlib Compilation Benchmark — task new/2
+========================================================================
+Compiler : new
+Run      : 2
+Job ID   : 1642144 (task 2)
+Node     : cn00
+sac2c    : /home/rhensen/sac2c/build_p/sac2c_p
+Stdlib   : /home/rhensen/Stdlib
+Targets  : seq;mt_pth
+Build    : make
+CPUs     : 4
+Mem cap  : 14G
+Time cap : 02:00:00
+========================================================================
+Collecting environment metadata...
+Using temp build root: /scratch/rhensen
+Per-task HOME        : /scratch/rhensen/stdlib_bench_new_2_1642144_2/home
+Starting timed clean build (cmake + make -j 4)...

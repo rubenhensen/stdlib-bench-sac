@@ -1,0 +1,48 @@
+========================================================================
+Stdlib Compilation Benchmark — task orig/1
+========================================================================
+Compiler : orig
+Run      : 1
+Job ID   : 1642145 (task 1)
+Node     : cn00
+sac2c    : /home/rhensen/sacoriginal/sac2c/build_p/sac2c_p
+Stdlib   : /home/rhensen/Stdlib
+Targets  : seq;mt_pth
+Build    : make
+CPUs     : 4
+Mem cap  : 14G
+Time cap : 02:00:00
+========================================================================
+Collecting environment metadata...
+Using temp build root: /scratch/rhensen
+Per-task HOME        : /scratch/rhensen/stdlib_bench_orig_1_1642145_1/home
+Starting timed clean build (cmake + make -j 4)...
+
+
+###############################################################################
+Science Cluster
+Job 1642147 for user 'rhensen'
+Finished at: Sun May 24 19:10:14 UTC 2026
+
+Job details:
+============
+
+Name                : stdlib-orig
+User                : rhensen
+Partition           : cncz
+Nodes               : cn00
+Cores               : 4
+State               : CANCELLED by 34220,CANCELLED
+Submit              : 2026-05-24T18:54:27
+Start               : 2026-05-24T18:54:28
+End                 : 2026-05-24T19:10:14
+Reserved walltime   : 02:00:00
+Used walltime       : 00:15:46
+Used CPU time       : 01:01:23 (efficiency: 97.33%)
+% User (Computation): 95.55%
+% System (I/O)      :  4.46%
+Mem reserved        : 14G
+Max Mem used        : 7.73G (cn00)
+Max Disk Write      : 3.50G (cn00)
+Max Disk Read       : 5.58G (cn00)
+

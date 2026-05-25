@@ -1,0 +1,73 @@
+{
+  "compilers": {
+    "new": {
+      "sac2c_branch": "progressive-dispatch-clean",
+      "sac2c_commit": "f2870cfeac931033f66bf11ab827beee08030327",
+      "sac2c_describe": "v2.1.0-PuurGeluk-327-gf2870cfea",
+      "sac2c_path": "/home/rhensen/sac2c/build_p/sac2c_p",
+      "sac2c_version_raw": "sac2c 2.1.0-PuurGeluk-327-gf2870|build-type: RELEASE|built-by: \"rhensen\" at 2026-05-24T17:49:38|"
+    },
+    "orig": {
+      "sac2c_branch": "develop",
+      "sac2c_commit": "ab3bbecacf1a978daf64b88cabc4b9df53d4b2e8",
+      "sac2c_describe": "v2.1.0-PuurGeluk-269-gab3bbecac",
+      "sac2c_path": "/home/rhensen/sacoriginal/sac2c/build_p/sac2c_p",
+      "sac2c_version_raw": "sac2c 2.1.0-PuurGeluk-269-gab3bb|build-type: RELEASE|built-by: \"rhensen\" at 2026-05-24T17:37:57|"
+    }
+  },
+  "config": {
+    "build_system": "make",
+    "build_targets": "seq;mt_pth",
+    "compilers": [
+      "new",
+      "orig"
+    ],
+    "runs_per_compiler": 2
+  },
+  "finished_at": "2026-05-24T18:06:27+00:00",
+  "hardware": {
+    "cmake_version": "cmake version 3.28.3",
+    "cpu_model": "Intel(R) Xeon(R) CPU E5-2630 v3 @ 2.40GHz",
+    "gcc_version": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "kernel": "6.17.0-14-generic",
+    "nodes_used": [
+      "cn58",
+      "cn99"
+    ],
+    "os_release": "Ubuntu 24.04.4 LTS",
+    "total_memory_kb": 264023620
+  },
+  "slurm": {
+    "account": "csmpi",
+    "cpus_per_task": "4",
+    "mem_requested": "14G",
+    "partition": "cncz",
+    "timelimit_requested": "02:00:00"
+  },
+  "started_at": "2026-05-24T18:06:25+00:00",
+  "stdlib": {
+    "branch": "master",
+    "commit": "9afffd46db51fd6877048f34fbd6c5a5de5eede5",
+    "src_path": "/home/rhensen/Stdlib"
+  },
+  "totals": {
+    "by_compiler": {
+      "new": {
+        "ERROR": 2
+      },
+      "orig": {
+        "ERROR": 2
+      }
+    },
+    "by_status": {
+      "ERROR": 4
+    },
+    "records": 4
+  },
+  "warnings": [
+    "hardware.cpu_model varied across tasks: ['Intel(R) Xeon(R) CPU E5-2630 v3 @ 2.40GHz', 'Intel(R) Xeon(R) CPU E5-2630L v3 @ 1.80GHz']",
+    "hardware.total_memory_kb varied across tasks: [264023620, 32764296]",
+    "hardware.kernel varied across tasks: ['6.17.0-14-generic', '6.8.0-110-generic']",
+    "runs landed on multiple nodes: ['cn58', 'cn99']"
+  ]
+}

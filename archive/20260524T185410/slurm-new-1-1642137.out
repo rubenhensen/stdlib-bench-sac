@@ -1,0 +1,115 @@
+========================================================================
+Stdlib Compilation Benchmark â€” task new/1
+========================================================================
+Compiler : new
+Run      : 1
+Job ID   : 1642137 (task 1)
+Node     : cn58
+sac2c    : /home/rhensen/sac2c/build_p/sac2c_p
+Stdlib   : /home/rhensen/Stdlib
+Targets  : seq;mt_pth
+Build    : make
+CPUs     : 4
+Mem cap  : 14G
+Time cap : 02:00:00
+========================================================================
+Collecting environment metadata...
+Using temp build root: /scratch/rhensen
+Starting timed clean build (cmake + make -j 4)...
+----- last 60 lines of build log -----
+-- Computing dependencies for `system/Process.sac'
+-- Computing dependencies for `system/RTClock.sac'
+-- Computing dependencies for `system/RTimer.sac'
+-- Computing dependencies for `system/RuntimeError.sac'
+-- Computing dependencies for `system/SysErr.sac'
+-- Computing dependencies for `system/System.sac'
+-- Computing dependencies for `system/Terminal.sac'
+-- Computing dependencies for `system/TimeStamp.sac'
+-- Computing dependencies for `system/World.sac'
+-- Computing dependencies for `auxiliary/Benchmarking.sac'
+-- Computing dependencies for `auxiliary/Interval.sac'
+-- Computing dependencies for `numerical/ComplexMath.sac'
+-- Computing dependencies for `stdio/ComplexIO.sac'
+-- Computing dependencies for `stdio/FibreIO.sac'
+-- Computing dependencies for `stdio/ListIO.sac'
+-- Computing dependencies for `structures/Color8.sac'
+-- Computing dependencies for `structures/Complex.sac'
+-- Computing dependencies for `structures/ComplexBasics.sac'
+-- Computing dependencies for `structures/ComplexScalarArith.sac'
+-- Computing dependencies for `structures/List.sac'
+-- Computing dependencies for `structures/StringArray.sac'
+-- Computing dependencies for `utrace/Indent.sac'
+-- Computing dependencies for `utrace/UTrace.sac'
+-- Computing dependencies for `stdio/ArrayIO.xsac'
+-- Computing dependencies for `stdio/ScalarIO.xsac'
+-- Computing dependencies for `structures/ArrayArith.xsac'
+-- Computing dependencies for `structures/ArrayBasics.xsac'
+-- Computing dependencies for `structures/ArrayReduce.xsac'
+-- Computing dependencies for `structures/ArrayTransform.xsac'
+-- Computing dependencies for `structures/ScalarArith.xsac'
+-- Computing dependencies for `auxiliary/Hiding.xsac'
+-- Computing dependencies for `structures/ArrayTransformApl.xsac'
+-- Computing dependencies for `structures/ComplexArrayArith.xsac'
+-- Computing dependencies for `structures/ComplexArrayBasics.xsac'
+-- Computing dependencies for `structures/ComplexArrayTransform.xsac'
+-- Computing dependencies for `structures/Quaternion.xsac'
+-- Computing dependencies for `structures/Vector3d.xsac'
+-- Computing dependencies for `structures/Vector3f.xsac'
+-- Configuring done (7.1s)
+-- Generating done (0.2s)
+-- Build files have been written to: /scratch/rhensen/tmp_stdlib_build_new_1_1642137_1/build
+[  0%] [34m[1mCreating package sac2crc file in user's home directory[0m
+[  1%] [34m[1mBuilding `ScalarArith.sac' from `ScalarArith.xsac' for target `seq'[0m
+[  1%] [34m[1mBuilding `ArrayBasics.sac' from `ArrayBasics.xsac' for target `seq'[0m
+[  1%] [34m[1mGenerating /scratch/rhensen/tmp_stdlib_build_new_1_1642137_1/build/src-seq/structures/src/Char/Char.o for target `seq'[0m
+[0mFound an existing sac2crc package file[0m
+[0mDifference detected, backing up old file[0m
+-- Creating sac2crc package file
+Abort:
+  Error while parsing '_Âgâ`'.
+Compilation failed while initial.
+make[4]: *** [src-seq/CMakeFiles/seq-module-Char.dir/build.make:83: src-seq/structures/src/Char/Char.o] Error 255
+make[3]: *** [CMakeFiles/Makefile2:665: src-seq/CMakeFiles/seq-module-Char.dir/all] Error 2
+make[3]: *** Waiting for unfinished jobs....
+[  2%] [34m[1mBuilding module `ScalarArith' for target `seq'[0m
+[  2%] [34m[1mBuilding module `ArrayBasics' for target `seq'[0m
+[  2%] Built target create-sac2crc-file
+[  2%] Built target seq-module-ScalarArith
+[  2%] Built target seq-module-ArrayBasics
+make[2]: *** [Makefile:156: all] Error 2
+--------------------------------------
+
+========================================================================
+Result: ERROR (exit 2)
+Peak RSS              : 361592 kB
+Record written to     : /home/rhensen/stdlib-bench-sac/results/stdlib-new-1.json
+========================================================================
+
+
+###############################################################################
+Science Cluster
+Job 1642139 for user 'rhensen'
+Finished at: Sun May 24 18:11:09 UTC 2026
+
+Job details:
+============
+
+Name                : stdlib-new
+User                : rhensen
+Partition           : cncz
+Nodes               : cn58
+Cores               : 4
+State               : FAILED
+Submit              : 2026-05-24T18:10:27
+Start               : 2026-05-24T18:10:28
+End                 : 2026-05-24T18:11:09
+Reserved walltime   : 02:00:00
+Used walltime       : 00:00:41
+Used CPU time       : 00:00:58 (efficiency: 35.53%)
+% User (Computation): 91.15%
+% System (I/O)      :  8.84%
+Mem reserved        : 14G
+Max Mem used        : 677.59M (cn58)
+Max Disk Write      : 0.00  (cn58)
+Max Disk Read       : 10.24K (cn58)
+

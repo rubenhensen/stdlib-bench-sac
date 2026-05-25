@@ -1,0 +1,115 @@
+========================================================================
+Stdlib Compilation Benchmark — task orig/1
+========================================================================
+Compiler : orig
+Run      : 1
+Job ID   : 1642121 (task 1)
+Node     : cn58
+sac2c    : /home/rhensen/sacoriginal/sac2c/build_p/sac2c_p
+Stdlib   : /home/rhensen/Stdlib
+Targets  : seq;mt_pth
+Build    : make
+CPUs     : 4
+Mem cap  : 14G
+Time cap : 02:00:00
+========================================================================
+Collecting environment metadata...
+Using temp build root: /scratch/rhensen
+Starting timed clean build (cmake + make -j 4)...
+----- last 60 lines of build log -----
+  INCLUDE could not find requested file:
+
+    cmake-common/generate-version-vars.cmake
+
+[0m
+-- Found BISON: /home/rhensen/bin/bison/bin/bison (found version "3.8") 
+-- Found FLEX: /usr/bin/flex (found version "2.6.4") 
+[0m
+ * Stdlib configuration done.
+ *
+ * sac2c executable:       /home/rhensen/sacoriginal/sac2c/build_p/sac2c_p
+ * local builddir:         /scratch/rhensen/tmp_stdlib_build_orig_1_1642121_1/build/lib
+ * targets:                seq;mt_pth
+ * sac2c CPP flags:        -DHAVE_CONFIG_H;-cppI/scratch/rhensen/tmp_stdlib_build_orig_1_1642121_1/build/include;-cppI/home/rhensen/Stdlib/include
+ * sac2c extra flags:      -DHAVE_CONFIG_H;-I/scratch/rhensen/tmp_stdlib_build_orig_1_1642121_1/build/include;-I/home/rhensen/Stdlib/include
+ *
+ * Configuration state:
+ * - full types:           OFF
+ * - build generic         OFF
+ * - build extended:       ON
+ *
+ * Packaging state:
+ * - is release:           FALSE
+[0m
+[31mCMake Error at src/CMakeLists.txt:2 (INCLUDE):
+  INCLUDE could not find requested file:
+
+    /home/rhensen/Stdlib/cmake-common/sac2c-variables.cmake
+
+[0m
+[31mCMake Error at src/CMakeLists.txt:3 (INCLUDE):
+  INCLUDE could not find requested file:
+
+    /home/rhensen/Stdlib/cmake-common/generate-sac2c-dependency-targets.cmake
+
+[0m
+[31mCMake Error at src/CMakeLists.txt:50 (STRING):
+  STRING sub-command REPLACE requires at least four arguments.
+
+[0m
+[31mCMake Error at src/CMakeLists.txt:51 (STRING):
+  STRING sub-command REPLACE requires at least four arguments.
+
+[0m
+[0mcall failed [0m
+[0mcall failed [0m
+[0mcall failed [0m
+[0mcall failed [0m
+[0mcall failed [0m
+[0mcall failed [0m
+[0mcall failed [0m
+[0mcall failed [0m
+[0mcall failed [0m
+[0mcall failed [0m
+[0mcall failed [0m
+[31mCMake Error at src/CMakeLists.txt:389 (RESOLVE_SAC_DEPS_AS_TARGETS):
+  Unknown CMake command "RESOLVE_SAC_DEPS_AS_TARGETS".
+
+[0m
+-- Configuring incomplete, errors occurred!
+--------------------------------------
+
+========================================================================
+Result: ERROR (exit 1)
+Peak RSS              : 26540 kB
+Record written to     : /home/rhensen/stdlib-bench-sac/results/stdlib-orig-1.json
+========================================================================
+
+
+###############################################################################
+Science Cluster
+Job 1642123 for user 'rhensen'
+Finished at: Sun May 24 18:01:48 UTC 2026
+
+Job details:
+============
+
+Name                : stdlib-orig
+User                : rhensen
+Partition           : cncz
+Nodes               : cn58
+Cores               : 4
+State               : FAILED
+Submit              : 2026-05-24T18:01:46
+Start               : 2026-05-24T18:01:47
+End                 : 2026-05-24T18:01:48
+Reserved walltime   : 02:00:00
+Used walltime       : 00:00:01
+Used CPU time       : 00:00:01 (efficiency: 27.02%)
+% User (Computation):  0.00%
+% System (I/O)      : 48.38%
+Mem reserved        : 14G
+Max Mem used        : 18.58M (cn58)
+Max Disk Write      : 0.00  (cn58)
+Max Disk Read       : 0.00  (cn58)
+

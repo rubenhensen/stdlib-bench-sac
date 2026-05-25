@@ -1,0 +1,86 @@
+========================================================================
+Stdlib Compilation Benchmark — task new/2
+========================================================================
+Compiler : new
+Run      : 2
+Job ID   : 1642125 (task 2)
+Node     : cn58
+sac2c    : /home/rhensen/sac2c/build_p/sac2c_p
+Stdlib   : /home/rhensen/Stdlib
+Targets  : seq;mt_pth
+Build    : make
+CPUs     : 4
+Mem cap  : 14G
+Time cap : 02:00:00
+========================================================================
+Collecting environment metadata...
+Using temp build root: /scratch/rhensen
+Starting timed clean build (cmake + make -j 4)...
+----- last 60 lines of build log -----
+  INCLUDE could not find requested file:
+
+    cmake-common/generate-version-vars.cmake
+
+[0m
+-- Found BISON: /home/rhensen/bin/bison/bin/bison (found version "3.8") 
+-- Found FLEX: /usr/bin/flex (found version "2.6.4") 
+[0m
+ * Stdlib configuration done.
+ *
+ * sac2c executable:       /home/rhensen/sac2c/build_p/sac2c_p
+ * local builddir:         /scratch/rhensen/tmp_stdlib_build_new_2_1642125_2/build/lib
+ * targets:                seq;mt_pth
+ * sac2c CPP flags:        -DHAVE_CONFIG_H;-cppI/scratch/rhensen/tmp_stdlib_build_new_2_1642125_2/build/include;-cppI/home/rhensen/Stdlib/include
+ * sac2c extra flags:      -DHAVE_CONFIG_H;-I/scratch/rhensen/tmp_stdlib_build_new_2_1642125_2/build/include;-I/home/rhensen/Stdlib/include
+ *
+ * Configuration state:
+ * - full types:           OFF
+ * - build generic         OFF
+ * - build extended:       ON
+ *
+ * Packaging state:
+ * - is release:           FALSE
+[0m
+[31mCMake Error at src/CMakeLists.txt:2 (INCLUDE):
+  INCLUDE could not find requested file:
+
+    /home/rhensen/Stdlib/cmake-common/sac2c-variables.cmake
+
+[0m
+[31mCMake Error at src/CMakeLists.txt:3 (INCLUDE):
+  INCLUDE could not find requested file:
+
+    /home/rhensen/Stdlib/cmake-common/generate-sac2c-dependency-targets.cmake
+
+[0m
+[31mCMake Error at src/CMakeLists.txt:50 (STRING):
+  STRING sub-command REPLACE requires at least four arguments.
+
+[0m
+[31mCMake Error at src/CMakeLists.txt:51 (STRING):
+  STRING sub-command REPLACE requires at least four arguments.
+
+[0m
+[0mcall failed [0m
+[0mcall failed [0m
+[0mcall failed [0m
+[0mcall failed [0m
+[0mcall failed [0m
+[0mcall failed [0m
+[0mcall failed [0m
+[0mcall failed [0m
+[0mcall failed [0m
+[0mcall failed [0m
+[0mcall failed [0m
+[31mCMake Error at src/CMakeLists.txt:389 (RESOLVE_SAC_DEPS_AS_TARGETS):
+  Unknown CMake command "RESOLVE_SAC_DEPS_AS_TARGETS".
+
+[0m
+-- Configuring incomplete, errors occurred!
+--------------------------------------
+
+========================================================================
+Result: ERROR (exit 1)
+Peak RSS              : 26092 kB
+Record written to     : /home/rhensen/stdlib-bench-sac/results/stdlib-new-2.json
+========================================================================

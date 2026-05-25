@@ -1,0 +1,48 @@
+========================================================================
+Stdlib Compilation Benchmark — task new/1
+========================================================================
+Compiler : new
+Run      : 1
+Job ID   : 1642144 (task 1)
+Node     : cn99
+sac2c    : /home/rhensen/sac2c/build_p/sac2c_p
+Stdlib   : /home/rhensen/Stdlib
+Targets  : seq;mt_pth
+Build    : make
+CPUs     : 4
+Mem cap  : 14G
+Time cap : 02:00:00
+========================================================================
+Collecting environment metadata...
+Using temp build root: /scratch/rhensen
+Per-task HOME        : /scratch/rhensen/stdlib_bench_new_1_1642144_1/home
+Starting timed clean build (cmake + make -j 4)...
+
+
+###############################################################################
+Science Cluster
+Job 1642146 for user 'rhensen'
+Finished at: Sun May 24 19:10:55 UTC 2026
+
+Job details:
+============
+
+Name                : stdlib-new
+User                : rhensen
+Partition           : cncz
+Nodes               : cn99
+Cores               : 4
+State               : CANCELLED,CANCELLED by 34220
+Submit              : 2026-05-24T18:54:27
+Start               : 2026-05-24T18:54:28
+End                 : 2026-05-24T19:10:54
+Reserved walltime   : 02:00:00
+Used walltime       : 00:16:26
+Used CPU time       : 00:53:52 (efficiency: 81.95%)
+% User (Computation): 96.07%
+% System (I/O)      :  3.93%
+Mem reserved        : 14G
+Max Mem used        : 7.14G (cn99)
+Max Disk Write      : 3.64G (cn99)
+Max Disk Read       : 6.35G (cn99)
+

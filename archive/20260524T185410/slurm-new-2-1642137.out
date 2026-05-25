@@ -1,0 +1,86 @@
+========================================================================
+Stdlib Compilation Benchmark — task new/2
+========================================================================
+Compiler : new
+Run      : 2
+Job ID   : 1642137 (task 2)
+Node     : cn58
+sac2c    : /home/rhensen/sac2c/build_p/sac2c_p
+Stdlib   : /home/rhensen/Stdlib
+Targets  : seq;mt_pth
+Build    : make
+CPUs     : 4
+Mem cap  : 14G
+Time cap : 02:00:00
+========================================================================
+Collecting environment metadata...
+Using temp build root: /scratch/rhensen
+Starting timed clean build (cmake + make -j 4)...
+----- last 60 lines of build log -----
+-- Computing dependencies for `structures/ArrayArith.xsac'
+-- Computing dependencies for `structures/ArrayBasics.xsac'
+-- Computing dependencies for `structures/ArrayReduce.xsac'
+-- Computing dependencies for `structures/ArrayTransform.xsac'
+-- Computing dependencies for `structures/ScalarArith.xsac'
+-- Computing dependencies for `auxiliary/Hiding.xsac'
+-- Computing dependencies for `structures/ArrayTransformApl.xsac'
+-- Computing dependencies for `structures/ComplexArrayArith.xsac'
+-- Computing dependencies for `structures/ComplexArrayBasics.xsac'
+-- Computing dependencies for `structures/ComplexArrayTransform.xsac'
+-- Computing dependencies for `structures/Quaternion.xsac'
+-- Computing dependencies for `structures/Vector3d.xsac'
+-- Computing dependencies for `structures/Vector3f.xsac'
+-- Configuring done (7.1s)
+-- Generating done (0.2s)
+-- Build files have been written to: /scratch/rhensen/tmp_stdlib_build_new_2_1642137_2/build
+[  0%] [34m[1mCreating package sac2crc file in user's home directory[0m
+[  0%] [34m[1mGenerating /scratch/rhensen/tmp_stdlib_build_new_2_1642137_2/build/src-seq/structures/src/Char/Char.o for target `seq'[0m
+[  0%] [34m[1mBuilding `ArrayBasics.sac' from `ArrayBasics.xsac' for target `seq'[0m
+[  1%] [34m[1mBuilding `ScalarArith.sac' from `ScalarArith.xsac' for target `seq'[0m
+-- Creating sac2crc package file
+[  2%] [34m[1mBuilding module `ScalarArith' for target `seq'[0m
+[  2%] [34m[1mBuilding module `ArrayBasics' for target `seq'[0m
+[  2%] Built target create-sac2crc-file
+[  2%] [34m[1mGenerating /scratch/rhensen/tmp_stdlib_build_new_2_1642137_2/build/src-seq/system/src/World/World.o for target `seq'[0m
+[  2%] [34m[1mBuilding module `Char' for target `seq'[0m
+[  3%] [34m[1mBuilding module `World' for target `seq'[0m
+[  3%] Built target seq-module-World
+[  3%] [34m[1mBuilding `ArrayArith.sac' from `ArrayArith.xsac' for target `seq'[0m
+[  3%] [34m[1mBuilding module `ArrayArith' for target `seq'[0m
+[  3%] Built target seq-module-Char
+[  3%] [34m[1mGenerating /scratch/rhensen/tmp_stdlib_build_new_2_1642137_2/build/src-seq/structures/src/Constants/Constants.o for target `seq'[0m
+[  3%] [34m[1mBuilding module `Constants' for target `seq'[0m
+[  3%] Built target seq-module-Constants
+[  4%] [34m[1mGenerating /scratch/rhensen/tmp_stdlib_build_new_2_1642137_2/build/src-seq/system/src/Terminal/terminal.o for target `seq'[0m
+[  4%] [34m[1mBuilding module `Terminal' for target `seq'[0m
+[  4%] Built target seq-module-Terminal
+[  5%] [34m[1mBuilding `Quaternion.sac' from `Quaternion.xsac' for target `seq'[0m
+[  5%] [34m[1mBuilding module `Quaternion' for target `seq'[0m
+[  5%] Built target seq-module-ScalarArith
+[  6%] [34m[1mGenerating /scratch/rhensen/tmp_stdlib_build_new_2_1642137_2/build/src-seq/system/src/MTClock/mtclock.o for target `seq'[0m
+[  6%] [34m[1mBuilding module `MTClock' for target `seq'[0m
+[  6%] Built target seq-module-MTClock
+[  6%] [34m[1mGenerating /scratch/rhensen/tmp_stdlib_build_new_2_1642137_2/build/src-seq/system/src/RTClock/rtclock.o for target `seq'[0m
+[  6%] [34m[1mBuilding module `RTClock' for target `seq'[0m
+[  6%] Built target seq-module-RTClock
+[  6%] [34m[1mGenerating /scratch/rhensen/tmp_stdlib_build_new_2_1642137_2/build/src-seq/system/src/TimeStamp/TimeStamp.o for target `seq'[0m
+[  6%] [34m[1mBuilding module `TimeStamp' for target `seq'[0m
+[  6%] Built target seq-module-TimeStamp
+[  6%] [34m[1mBuilding module `Interval' for target `seq'[0m
+Abort:
+  The module 'sacprelude_p' (/home/rhensen/sacoriginal/sac2c/build_p/runtime_build/src/runtime_libraries-build/lib/prelude/tree/host/seq/libsacprelude_pTree.so) uses an incompatible syntax tree layout. Please update the module and compiler to the most recent version.
+Compilation failed while Running module system.
+make[4]: *** [src-seq/CMakeFiles/seq-module-Interval.dir/build.make:74: lib/host/seq/libIntervalMod.so] Error 29
+make[3]: *** [CMakeFiles/Makefile2:1242: src-seq/CMakeFiles/seq-module-Interval.dir/all] Error 2
+make[3]: *** Waiting for unfinished jobs....
+[  6%] Built target seq-module-ArrayBasics
+[  6%] Built target seq-module-Quaternion
+[  6%] Built target seq-module-ArrayArith
+make[2]: *** [Makefile:156: all] Error 2
+--------------------------------------
+
+========================================================================
+Result: ERROR (exit 2)
+Peak RSS              : 1629996 kB
+Record written to     : /home/rhensen/stdlib-bench-sac/results/stdlib-new-2.json
+========================================================================

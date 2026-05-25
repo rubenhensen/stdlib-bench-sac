@@ -1,0 +1,115 @@
+========================================================================
+Stdlib Compilation Benchmark — task new/1
+========================================================================
+Compiler : new
+Run      : 1
+Job ID   : 1642133 (task 1)
+Node     : cn99
+sac2c    : /home/rhensen/sac2c/build_p/sac2c_p
+Stdlib   : /home/rhensen/Stdlib
+Targets  : seq;mt_pth
+Build    : make
+CPUs     : 4
+Mem cap  : 14G
+Time cap : 02:00:00
+========================================================================
+Collecting environment metadata...
+Using temp build root: /scratch/rhensen
+Starting timed clean build (cmake + make -j 4)...
+----- last 60 lines of build log -----
+make[4]: *** [src-seq/CMakeFiles/seq-module-Math.dir/build.make:74: lib/host/seq/libMathMod.so] Error 255
+make[3]: *** [CMakeFiles/Makefile2:349: src-seq/CMakeFiles/seq-module-Math.dir/all] Error 2
+make[3]: *** Waiting for unfinished jobs....
+-- Creating sac2crc package file
+/home/rhensen/.sac2crc/sac2crc.release.prelude:7:1-10: error:
+  6. target default_sbi :: add_local:
+  7. efault_sbi :: add_local:
+     ~~~~~~~~~~
+  
+  := or += expected
+/home/rhensen/.sac2crc/sac2crc.release.prelude:7:24: error:
+  6. target default_sbi :: add_local:
+  7. efault_sbi :: add_local:
+                            ↑
+  
+  target expected
+/home/rhensen/.sac2crc/sac2crc.release.prelude:7:1-10: error:
+  6. target default_sbi :: add_local:
+  7. efault_sbi :: add_local:
+     ~~~~~~~~~~
+  
+  := or += expected
+/home/rhensen/.sac2crc/sac2crc.release.prelude:7:24: error:
+  6. target default_sbi :: add_local:
+  7. efault_sbi :: add_local:
+                            ↑
+  
+  target expected
+/home/rhensen/.sac2crc/sac2crc.debug.prelude:7:1-10: error:
+  6. target default_sbi :: add_local:
+  7. efault_sbi :: add_local:
+     ~~~~~~~~~~
+  
+  := or += expected
+/home/rhensen/.sac2crc/sac2crc.debug.prelude:7:24: error:
+  6. target default_sbi :: add_local:
+  7. efault_sbi :: add_local:
+                            ↑
+  
+  target expected
+/home/rhensen/.sac2crc/sac2crc.debug.prelude:7:1-10: error:
+  6. target default_sbi :: add_local:
+  7. efault_sbi :: add_local:
+     ~~~~~~~~~~
+  
+  := or += expected
+/home/rhensen/.sac2crc/sac2crc.debug.prelude:7:24: error:
+  6. target default_sbi :: add_local:
+  7. efault_sbi :: add_local:
+                            ↑
+  
+  target expected
+Compilation failed while initialCompilation failed while initial, 4 error(s), 4 error(s).
+.
+make[4]: *** [src-seq/CMakeFiles/seq-module-Vector3f.dir/build.make:74: lib/host/seq/libVector3fMod.so] Error 255
+make[3]: *** [CMakeFiles/Makefile2:1883: src-seq/CMakeFiles/seq-module-Vector3f.dir/all] Error 2
+make[4]: *** [src-seq/CMakeFiles/seq-module-MathArray.dir/build.make:74: lib/host/seq/libMathArrayMod.so] Error 255
+make[3]: *** [CMakeFiles/Makefile2:375: src-seq/CMakeFiles/seq-module-MathArray.dir/all] Error 2
+[  3%] Built target create-sac2crc-file
+make[2]: *** [Makefile:156: all] Error 2
+--------------------------------------
+
+========================================================================
+Result: ERROR (exit 2)
+Peak RSS              : 30276 kB
+Record written to     : /home/rhensen/stdlib-bench-sac/results/stdlib-new-1.json
+========================================================================
+
+
+###############################################################################
+Science Cluster
+Job 1642135 for user 'rhensen'
+Finished at: Sun May 24 18:08:57 UTC 2026
+
+Job details:
+============
+
+Name                : stdlib-new
+User                : rhensen
+Partition           : cncz
+Nodes               : cn99
+Cores               : 4
+State               : FAILED
+Submit              : 2026-05-24T18:08:51
+Start               : 2026-05-24T18:08:52
+End                 : 2026-05-24T18:08:57
+Reserved walltime   : 02:00:00
+Used walltime       : 00:00:05
+Used CPU time       : 00:00:03 (efficiency: 19.56%)
+% User (Computation): 51.69%
+% System (I/O)      : 48.29%
+Mem reserved        : 14G
+Max Mem used        : 27.55M (cn99)
+Max Disk Write      : 0.00  (cn99)
+Max Disk Read       : 0.00  (cn99)
+

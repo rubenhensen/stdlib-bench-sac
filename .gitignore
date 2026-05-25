@@ -1,8 +1,0 @@
-venv/
-jobs/
-results/
-summary/
-archive/
-slurm-*.out
-slurm-*.err
-job_ids.txt

@@ -1,0 +1,41 @@
+{
+  "comparison": null,
+  "failed_runs": {
+    "new": [
+      {
+        "exit_code": "1",
+        "node": "cn99",
+        "run": 1,
+        "status": "ERROR"
+      },
+      {
+        "exit_code": "1",
+        "node": "cn58",
+        "run": 2,
+        "status": "ERROR"
+      }
+    ],
+    "orig": [
+      {
+        "exit_code": "1",
+        "node": "cn58",
+        "run": 1,
+        "status": "ERROR"
+      },
+      {
+        "exit_code": "1",
+        "node": "cn99",
+        "run": 2,
+        "status": "ERROR"
+      }
+    ]
+  },
+  "peak_rss_kb_stats": {
+    "new": null,
+    "orig": null
+  },
+  "stats": {
+    "new": null,
+    "orig": null
+  }
+}

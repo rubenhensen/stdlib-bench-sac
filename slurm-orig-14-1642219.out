@@ -1,0 +1,117 @@
+========================================================================
+Stdlib Compilation Benchmark — task orig/14
+========================================================================
+Compiler : orig
+Run      : 14
+Job ID   : 1642219 (task 14)
+Node     : cn99
+sac2c    : /home/rhensen/sacoriginal/sac2c/build_p/sac2c_p
+Stdlib   : /home/rhensen/Stdlib
+Targets  : seq;mt_pth
+Build    : make
+CPUs     : 4
+Mem cap  : 14G
+Time cap : 02:00:00
+========================================================================
+Collecting environment metadata...
+Using temp build root: /scratch/rhensen
+Per-task HOME        : /scratch/rhensen/stdlib_bench_orig_14_1642219_14/home
+Starting timed clean build (cmake + make -j 4)...
+----- last 60 lines of build log -----
+[ 92%] [34m[1mGenerating /scratch/rhensen/stdlib_bench_orig_14_1642219_14/build/build/src-mt_pth/stdio/src/TermFile/scanf.o for target `mt_pth'[0m
+[ 92%] [34m[1mGenerating /scratch/rhensen/stdlib_bench_orig_14_1642219_14/build/build/src-mt_pth/stdio/src/File/ftell.o for target `mt_pth'[0m
+[ 92%] [34m[1mGenerating /scratch/rhensen/stdlib_bench_orig_14_1642219_14/build/build/src-mt_pth/stdio/src/TermFile/stdstreams.o for target `mt_pth'[0m
+[ 92%] [34m[1mGenerating /scratch/rhensen/stdlib_bench_orig_14_1642219_14/build/build/src-mt_pth/stdio/src/File/mkstemp.o for target `mt_pth'[0m
+[ 92%] [34m[1mBuilding module `TermFile' for target `mt_pth'[0m
+[ 93%] [34m[1mGenerating /scratch/rhensen/stdlib_bench_orig_14_1642219_14/build/build/src-mt_pth/stdio/src/File/rewind.o for target `mt_pth'[0m
+[ 93%] [34m[1mGenerating /scratch/rhensen/stdlib_bench_orig_14_1642219_14/build/build/src-mt_pth/stdio/src/File/rm.o for target `mt_pth'[0m
+[ 93%] [34m[1mBuilding module `File' for target `mt_pth'[0m
+[ 93%] Built target mt_pth-module-File
+[ 93%] [34m[1mBuilding module `Color8' for target `mt_pth'[0m
+[ 93%] Built target mt_pth-module-TermFile
+[ 93%] [34m[1mGenerating /scratch/rhensen/stdlib_bench_orig_14_1642219_14/build/build/src-mt_pth/system/src/Process/system.o for target `mt_pth'[0m
+[ 93%] [34m[1mGenerating /scratch/rhensen/stdlib_bench_orig_14_1642219_14/build/build/src-mt_pth/system/src/Process/pclose.o for target `mt_pth'[0m
+[ 93%] [34m[1mGenerating /scratch/rhensen/stdlib_bench_orig_14_1642219_14/build/build/src-mt_pth/system/src/Process/process.o for target `mt_pth'[0m
+[ 94%] [34m[1mBuilding module `Process' for target `mt_pth'[0m
+[ 94%] Built target mt_pth-module-Process
+[ 94%] [34m[1mBuilding module `Indent' for target `mt_pth'[0m
+[ 94%] Built target mt_pth-module-Indent
+[ 94%] [34m[1mBuilding module `IOresources' for target `mt_pth'[0m
+[ 94%] Built target mt_pth-module-IOresources
+[ 94%] [34m[1mGenerating /scratch/rhensen/stdlib_bench_orig_14_1642219_14/build/build/src-mt_pth/stdio/src/ComplexIO/PrintComplexArray.o for target `mt_pth'[0m
+[ 94%] [34m[1mBuilding module `ComplexIO' for target `mt_pth'[0m
+[ 94%] Built target mt_pth-module-ComplexIO
+[ 94%] Built target mt_pth-module-Color8
+[ 94%] [34m[1mBuilding module `Structures' for target `mt_pth'[0m
+[ 94%] Built target mt_pth-module-StringArray
+[ 94%] [34m[1mRunning /home/rhensen/bin/bison/bin/bison on `/home/rhensen/Stdlib/src/stdio/src/FibreIO/FibreScan.y'[0m
+[ 94%] [34m[1mRunning /usr/bin/flex on `/home/rhensen/Stdlib/src/stdio/src/FibreIO/FibreScan.l'[0m
+[ 95%] [34m[1mGenerating FibreIO Lexer for target `mt_pth'[0m
+[ 95%] [34m[1mGenerating /scratch/rhensen/stdlib_bench_orig_14_1642219_14/build/build/src-mt_pth/stdio/src/FibreIO/FibrePrint.o for target `mt_pth'[0m
+[ 96%] [34m[1mGenerating FibreIO Parser for target `mt_pth'[0m
+[ 96%] [34m[1mGenerating /scratch/rhensen/stdlib_bench_orig_14_1642219_14/build/build/src-mt_pth/stdio/src/FibreIO/ScanDbl.o for target `mt_pth'[0m
+[ 96%] [34m[1mGenerating /scratch/rhensen/stdlib_bench_orig_14_1642219_14/build/build/src-mt_pth/stdio/src/FibreIO/ScanDblArr.o for target `mt_pth'[0m
+[ 96%] [34m[1mGenerating /scratch/rhensen/stdlib_bench_orig_14_1642219_14/build/build/src-mt_pth/stdio/src/FibreIO/ScanFlt.o for target `mt_pth'[0m
+[ 97%] [34m[1mGenerating /scratch/rhensen/stdlib_bench_orig_14_1642219_14/build/build/src-mt_pth/stdio/src/FibreIO/ScanFltArr.o for target `mt_pth'[0m
+[ 97%] [34m[1mGenerating /scratch/rhensen/stdlib_bench_orig_14_1642219_14/build/build/src-mt_pth/stdio/src/FibreIO/ScanInt.o for target `mt_pth'[0m
+[ 97%] [34m[1mGenerating /scratch/rhensen/stdlib_bench_orig_14_1642219_14/build/build/src-mt_pth/stdio/src/FibreIO/ScanIntArr.o for target `mt_pth'[0m
+[ 97%] [34m[1mGenerating /scratch/rhensen/stdlib_bench_orig_14_1642219_14/build/build/src-mt_pth/stdio/src/FibreIO/ScanStringArr.o for target `mt_pth'[0m
+[ 97%] [34m[1mBuilding module `FibreIO' for target `mt_pth'[0m
+[ 97%] Built target mt_pth-module-FibreIO
+[ 97%] Built target mt_pth-module-ArrayFormat
+[ 97%] [34m[1mBuilding `ScalarIO.sac' from `ScalarIO.xsac' for target `mt_pth'[0m
+[ 97%] [34m[1mBuilding `ArrayIO.sac' from `ArrayIO.xsac' for target `mt_pth'[0m
+[ 97%] [34m[1mGenerating /scratch/rhensen/stdlib_bench_orig_14_1642219_14/build/build/src-mt_pth/stdio/src/ArrayIO/ShowArray.o for target `mt_pth'[0m
+[ 97%] [34m[1mBuilding module `ScalarIO' for target `mt_pth'[0m
+[ 97%] [34m[1mGenerating /scratch/rhensen/stdlib_bench_orig_14_1642219_14/build/build/src-mt_pth/stdio/src/ArrayIO/PrintArray.o for target `mt_pth'[0m
+[ 98%] [34m[1mBuilding module `ArrayIO' for target `mt_pth'[0m
+[ 98%] Built target mt_pth-module-ScalarIO
+[ 98%] [34m[1mBuilding module `ListIO' for target `mt_pth'[0m
+[ 98%] Built target mt_pth-module-ArrayIO
+[100%] [34m[1mBuilding module `UTrace' for target `mt_pth'[0m
+[100%] [34m[1mBuilding module `StdIO' for target `mt_pth'[0m
+[100%] Built target mt_pth-module-ListIO
+[100%] Built target mt_pth-module-StdIO
+[100%] [34m[1mGenerating /scratch/rhensen/stdlib_bench_orig_14_1642219_14/build/build/src-mt_pth/auxiliary/src/C99Benchmarking/bench.o for target `mt_pth'[0m
+[100%] [34m[1mBuilding module `Benchmarking' for target `mt_pth'[0m
+[100%] Built target mt_pth-module-Structures
+[100%] Built target mt_pth-module-Benchmarking
+[100%] Built target mt_pth-module-UTrace
+[100%] Built target mt_pth-all-modules
+--------------------------------------
+
+========================================================================
+Result: SUCCESS (exit 0)
+Wall-clock build time : 1584.621345 s
+Peak RSS              : 3859836 kB
+Record written to     : /home/rhensen/stdlib-bench-sac/results/stdlib-orig-14.json
+========================================================================
+
+
+###############################################################################
+Science Cluster
+Job 1642277 for user 'rhensen'
+Finished at: Mon May 25 04:42:35 UTC 2026
+
+Job details:
+============
+
+Name                : stdlib-orig
+User                : rhensen
+Partition           : cncz
+Nodes               : cn99
+Cores               : 4
+State               : COMPLETED
+Submit              : 2026-05-24T23:18:18
+Start               : 2026-05-25T04:16:10
+End                 : 2026-05-25T04:42:35
+Reserved walltime   : 02:00:00
+Used walltime       : 00:26:25
+Used CPU time       : 01:18:05 (efficiency: 73.90%)
+% User (Computation): 96.07%
+% System (I/O)      :  3.93%
+Mem reserved        : 14G
+Max Mem used        : 7.49G (cn99)
+Max Disk Write      : 5.31G (cn99)
+Max Disk Read       : 8.33G (cn99)
+

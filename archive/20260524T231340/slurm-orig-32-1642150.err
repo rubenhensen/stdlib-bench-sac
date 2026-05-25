@@ -1,0 +1,2 @@
+slurmstepd: error: *** JOB 1642150 ON cn99 CANCELLED AT 2026-05-24T23:14:44 ***
+/var/spool/slurm/slurmd/job1642150/slurm_script: line 70: /home/rhensen/stdlib-bench-sac/results/stdlib-orig-32.json: No such file or directory

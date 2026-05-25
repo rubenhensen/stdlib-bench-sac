@@ -1,0 +1,5 @@
+# job_id  compiler  array_spec  submitted_at  note
+1642116  new  1-2  2026-05-24T18:01:15+00:00  INITIAL
+1642117  orig  1-2  2026-05-24T18:01:15+00:00  INITIAL
+1642120  new  1,2%4  2026-05-24T18:01:46+00:00  RETRY
+1642121  orig  1,2%4  2026-05-24T18:01:46+00:00  RETRY
