@@ -1,0 +1,30 @@
+{
+  "upload_type": "software",
+  "title": "SaC standard library compilation benchmark — thesis snapshot",
+  "version": "thesis-v1.0",
+  "language": "eng",
+  "license": "isc",
+  "access_right": "open",
+  "creators": [
+    {
+      "name": "Hensen, Ruben",
+      "affiliation": "Radboud University Nijmegen"
+    }
+  ],
+  "keywords": [
+    "compilation time",
+    "standard library",
+    "benchmark",
+    "Single Assignment C",
+    "rank polymorphism"
+  ],
+  "description": "<p>Benchmark harness and raw measurement data for the standard-library compilation experiment in the MSc thesis <em>A Novel Type System for Rank-Polymorphic Array Languages</em> (Radboud University, 2026).</p><p>32 runs per compiler, all completed without failure. Includes full per-run records: wall-clock time, peak resident set size, CPU time and SLURM job IDs. Measured against SaC standard library commit <code>9afffd46db51</code>.</p><p>Measured on the Radboud University SLURM cluster, node cn99: Intel Xeon E5-2630 v3 @ 2.40 GHz, 4 CPUs and 14 G per task, partition cncz, Ubuntu 24.04.4 LTS (kernel 6.17.0-14-generic), gcc 13.3.0. No warmup; each SLURM task is an independent cold run.</p><p>The compiler versions benchmarked are archived separately at doi:10.5281/zenodo.22060662.</p>",
+  "related_identifiers": [
+    {
+      "relation": "isSupplementTo",
+      "identifier": "https://doi.org/10.5281/zenodo.22060662",
+      "scheme": "doi",
+      "resource_type": "software"
+    }
+  ]
+}
